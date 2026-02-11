@@ -295,6 +295,9 @@
     var slide = slides[index];
     if (!slide) return;
 
+    /* Activate VFX layer */
+    slide.classList.add('vfx-active');
+
     var targets = slide.querySelectorAll(
       '[data-animate], [data-stagger], [data-stagger-scale]'
     );
@@ -340,6 +343,9 @@
     var slide = slides[index];
     if (!slide) return;
 
+    /* Deactivate VFX layer */
+    slide.classList.remove('vfx-active');
+
     var targets = slide.querySelectorAll(
       '[data-animate], [data-stagger], [data-stagger-scale]'
     );
@@ -361,6 +367,31 @@
       var length = path.getTotalLength();
       path.style.transition = 'none';
       path.style.strokeDashoffset = String(length);
+    });
+
+    /* Reset neural network lines (re-hide for next visit) */
+    var neuralLines = slide.querySelectorAll('.vfx-neural line');
+    neuralLines.forEach(function (line) {
+      var dash = line.style.getPropertyValue('--vfx-dash');
+      if (dash) {
+        line.style.transition = 'none';
+        line.style.strokeDashoffset = dash;
+        /* Force reflow for next activation */
+        void line.offsetWidth;
+        line.style.transition = '';
+      }
+    });
+
+    /* Reset block connection lines */
+    var blockLines = slide.querySelectorAll('.vfx-blocks line');
+    blockLines.forEach(function (line) {
+      var bl = line.style.getPropertyValue('--vfx-bl');
+      if (bl) {
+        line.style.transition = 'none';
+        line.style.strokeDashoffset = bl;
+        void line.offsetWidth;
+        line.style.transition = '';
+      }
     });
   }
 
@@ -544,13 +575,67 @@
 
   /* -------------------------------------------------------
      15. SHOW UI ELEMENTS
+     Side nav is excluded — it only appears on screen tap/click.
      ------------------------------------------------------- */
   function showUI() {
-    if (sideNav) sideNav.classList.add('side-nav--visible');
     if (slideCounter) slideCounter.classList.add('slide-counter--visible');
     if (keyHint) keyHint.classList.add('key-hint--visible');
     if (prevArrow) prevArrow.classList.add('nav-arrow--visible');
     if (nextArrow) nextArrow.classList.add('nav-arrow--visible');
+  }
+
+
+  /* -------------------------------------------------------
+     15b. SIDE NAV TOGGLE ON CLICK
+     Shows on click/tap anywhere on the screen body,
+     auto-hides after 3.5 seconds of inactivity.
+     Clicking the nav itself keeps it open (resets timer).
+     ------------------------------------------------------- */
+  function initSideNavToggle() {
+    if (!sideNav) return;
+
+    var hideTimer = null;
+    var NAV_TIMEOUT = 3500; /* ms */
+
+    function showNav() {
+      sideNav.classList.add('side-nav--visible');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(hideNav, NAV_TIMEOUT);
+    }
+
+    function hideNav() {
+      sideNav.classList.remove('side-nav--visible');
+      clearTimeout(hideTimer);
+    }
+
+    /* Click/tap on screen toggles the nav */
+    document.addEventListener('click', function (e) {
+      /* If clicking inside the nav, keep it open (reset timer) */
+      if (sideNav.contains(e.target)) {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(hideNav, NAV_TIMEOUT);
+        return;
+      }
+
+      /* If clicking nav arrows, ignore (don't toggle) */
+      if (prevArrow && prevArrow.contains(e.target)) return;
+      if (nextArrow && nextArrow.contains(e.target)) return;
+
+      /* Toggle */
+      if (sideNav.classList.contains('side-nav--visible')) {
+        hideNav();
+      } else {
+        showNav();
+      }
+    });
+
+    /* Also hide nav when navigating via keyboard */
+    document.addEventListener('keydown', function () {
+      if (sideNav.classList.contains('side-nav--visible')) {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(hideNav, NAV_TIMEOUT);
+      }
+    });
   }
 
 
@@ -586,6 +671,236 @@
         }
       }
     }, { passive: true });
+  }
+
+
+  /* -------------------------------------------------------
+     17. VISUAL LAYERS — Atmospheric decorative elements
+     Creates and injects SVG/div layers into specific slides.
+     Activated via .vfx-active class on parent slide.
+     ------------------------------------------------------- */
+  function initVisualLayers() {
+    var svgNS = 'http://www.w3.org/2000/svg';
+
+    /* Helper: create an SVG element */
+    function svgEl(tag, attrs) {
+      var el = document.createElementNS(svgNS, tag);
+      if (attrs) {
+        for (var k in attrs) {
+          if (attrs.hasOwnProperty(k)) {
+            el.setAttribute(k, attrs[k]);
+          }
+        }
+      }
+      return el;
+    }
+
+    /* Helper: find slide by data-slide number */
+    function getSlide(num) {
+      return document.querySelector('.slide[data-slide="' + num + '"]');
+    }
+
+
+    /* ==== 1. SLIDE 1 — Neural Network ==== */
+    (function () {
+      var slide = getSlide(1);
+      if (!slide) return;
+
+      var wrapper = document.createElement('div');
+      wrapper.className = 'vfx-neural';
+      wrapper.setAttribute('aria-hidden', 'true');
+
+      var svg = svgEl('svg', { viewBox: '0 0 800 400', preserveAspectRatio: 'xMidYMid meet' });
+
+      /* Define node positions */
+      var nodes = [
+        /* Layer 1 (left) */
+        { x: 80, y: 80 }, { x: 80, y: 200 }, { x: 80, y: 320 },
+        /* Layer 2 */
+        { x: 240, y: 60 }, { x: 240, y: 160 }, { x: 240, y: 260 }, { x: 240, y: 360 },
+        /* Layer 3 */
+        { x: 420, y: 100 }, { x: 420, y: 200 }, { x: 420, y: 300 },
+        /* Layer 4 */
+        { x: 580, y: 80 }, { x: 580, y: 200 }, { x: 580, y: 320 },
+        /* Layer 5 (right) */
+        { x: 720, y: 140 }, { x: 720, y: 260 }
+      ];
+
+      /* Define connections (index pairs) */
+      var connections = [
+        [0,3],[0,4],[1,3],[1,4],[1,5],[2,4],[2,5],[2,6],
+        [3,7],[3,8],[4,7],[4,8],[4,9],[5,8],[5,9],[6,9],
+        [7,10],[7,11],[8,10],[8,11],[8,12],[9,11],[9,12],
+        [10,13],[10,14],[11,13],[11,14],[12,13],[12,14]
+      ];
+
+      /* Draw lines */
+      connections.forEach(function (c) {
+        var n1 = nodes[c[0]];
+        var n2 = nodes[c[1]];
+        var dx = n2.x - n1.x;
+        var dy = n2.y - n1.y;
+        var len = Math.sqrt(dx * dx + dy * dy);
+        var line = svgEl('line', {
+          x1: n1.x, y1: n1.y,
+          x2: n2.x, y2: n2.y
+        });
+        line.style.setProperty('--vfx-dash', String(Math.round(len)));
+        /* Stagger the drawing animation */
+        line.style.transitionDelay = (c[0] * 0.08) + 's';
+        svg.appendChild(line);
+      });
+
+      /* Draw nodes */
+      nodes.forEach(function (n, idx) {
+        var circle = svgEl('circle', {
+          cx: n.x, cy: n.y, r: 3
+        });
+        circle.style.setProperty('--vfx-node-delay', (1.5 + idx * 0.1) + 's');
+        svg.appendChild(circle);
+      });
+
+      wrapper.appendChild(svg);
+      slide.insertBefore(wrapper, slide.firstChild);
+    })();
+
+
+    /* ==== 2. SLIDE 5 — Rotating Incomplete Circle (REMOVED) ==== */
+
+
+    /* ==== 3. SLIDES 8 & 9 — Floating Logo Cluster ==== */
+    /* Primarily on slide 9 (logo cloud) for maximum visual impact,
+       lighter version on slide 8 (ansiedade text) as backdrop. */
+    (function () {
+      var tools = [
+        { name: 'ChatGPT', layer: 'front', top: 5, left: 3 },
+        { name: 'Claude', layer: 'mid', top: 8, left: 78 },
+        { name: 'Gemini', layer: 'back', top: 3, left: 42 },
+        { name: 'Perplexity', layer: 'front', top: 88, left: 72 },
+        { name: 'Figma AI', layer: 'mid', top: 82, left: 8 },
+        { name: 'v0', layer: 'back', top: 15, left: 88 },
+        { name: 'Cursor', layer: 'front', top: 90, left: 38 },
+        { name: 'Lovable', layer: 'mid', top: 10, left: 18 },
+        { name: 'Granola', layer: 'back', top: 92, left: 58 },
+        { name: 'NotebookLM', layer: 'mid', top: 6, left: 60 },
+        { name: 'Runway', layer: 'front', top: 85, left: 85 },
+        { name: 'Firefly', layer: 'back', top: 16, left: 92 },
+        { name: 'Tome', layer: 'mid', top: 88, left: 22 },
+        { name: 'Gamma', layer: 'back', top: 4, left: 30 },
+        { name: 'Notion AI', layer: 'front', top: 92, left: 48 }
+      ];
+
+      var floatAnims = ['vfx-float-1', 'vfx-float-2', 'vfx-float-3', 'vfx-float-4', 'vfx-float-5', 'vfx-float-6'];
+      var durations = { back: '18s', mid: '12s', front: '8s' };
+
+      function createCluster(slideNum, extraClass) {
+        var slide = getSlide(slideNum);
+        if (!slide) return;
+
+        var wrapper = document.createElement('div');
+        wrapper.className = 'vfx-logo-cluster' + (extraClass ? ' ' + extraClass : '');
+        wrapper.setAttribute('aria-hidden', 'true');
+
+        tools.forEach(function (tool, idx) {
+          var el = document.createElement('span');
+          el.className = 'vfx-logo-float vfx-logo-float--' + tool.layer;
+          el.textContent = tool.name;
+          el.style.top = tool.top + '%';
+          el.style.left = tool.left + '%';
+          el.style.animationName = floatAnims[idx % floatAnims.length];
+          el.style.animationDuration = durations[tool.layer];
+          el.style.animationDelay = (idx * 0.4) + 's';
+          wrapper.appendChild(el);
+        });
+
+        slide.insertBefore(wrapper, slide.firstChild);
+      }
+
+      /* Slide 9 — primary, stronger presence */
+      createCluster(9, 'vfx-logo-cluster--primary');
+      /* Slide 8 — lighter backdrop */
+      createCluster(8, 'vfx-logo-cluster--subtle');
+    })();
+
+
+    /* ==== 4. MICRO-ILLUSTRATIONS (REMOVED) ==== */
+
+
+    /* ==== 5. SLIDE 18 — Connected Blocks ==== */
+    (function () {
+      var slide = getSlide(18);
+      if (!slide) return;
+
+      var wrapper = document.createElement('div');
+      wrapper.className = 'vfx-blocks';
+      wrapper.setAttribute('aria-hidden', 'true');
+
+      var svg = svgEl('svg', { viewBox: '0 0 240 300', preserveAspectRatio: 'xMidYMid meet' });
+
+      /* Blocks */
+      var blockData = [
+        { x: 10, y: 10, w: 70, h: 40, glow: 'vfx-block-glow-1' },
+        { x: 100, y: 30, w: 60, h: 35, glow: '' },
+        { x: 30, y: 90, w: 65, h: 38, glow: 'vfx-block-glow-2' },
+        { x: 130, y: 100, w: 70, h: 40, glow: '' },
+        { x: 60, y: 175, w: 55, h: 35, glow: 'vfx-block-glow-3' },
+        { x: 140, y: 190, w: 65, h: 38, glow: '' }
+      ];
+
+      blockData.forEach(function (b) {
+        var attrs = { x: b.x, y: b.y, width: b.w, height: b.h };
+        if (b.glow) attrs['class'] = b.glow;
+        var rect = svgEl('rect', attrs);
+        svg.appendChild(rect);
+      });
+
+      /* Connection lines between blocks */
+      var lineData = [
+        { x1: 45, y1: 50, x2: 130, y2: 30 },
+        { x1: 80, y1: 50, x2: 62, y2: 90 },
+        { x1: 160, y1: 65, x2: 165, y2: 100 },
+        { x1: 95, y1: 128, x2: 130, y2: 110 },
+        { x1: 62, y1: 128, x2: 87, y2: 175 },
+        { x1: 165, y1: 140, x2: 172, y2: 190 }
+      ];
+
+      lineData.forEach(function (l) {
+        var dx = l.x2 - l.x1;
+        var dy = l.y2 - l.y1;
+        var len = Math.round(Math.sqrt(dx * dx + dy * dy));
+        var line = svgEl('line', l);
+        line.style.setProperty('--vfx-bl', String(len));
+        line.style.transitionDelay = (lineData.indexOf(l) * 0.3 + 0.5) + 's';
+        svg.appendChild(line);
+      });
+
+      wrapper.appendChild(svg);
+      slide.insertBefore(wrapper, slide.firstChild);
+    })();
+
+
+    /* ==== 6. SLIDE 20 — Growing Central Light ==== */
+    (function () {
+      var slide = getSlide(20);
+      if (!slide) return;
+
+      var light = document.createElement('div');
+      light.className = 'vfx-center-light';
+      light.setAttribute('aria-hidden', 'true');
+      slide.insertBefore(light, slide.firstChild);
+    })();
+
+
+    /* ==== 7. SLIDES 21 & 22 — Diagonal Light Sweep ==== */
+    [21, 22].forEach(function (num) {
+      var slide = getSlide(num);
+      if (!slide) return;
+
+      var sweep = document.createElement('div');
+      sweep.className = 'vfx-sweep';
+      sweep.setAttribute('aria-hidden', 'true');
+      slide.insertBefore(sweep, slide.firstChild);
+    });
   }
 
 
@@ -642,6 +957,7 @@
       initArrowNav();
       initTouchNav();
       initWheelNav();
+      initSideNavToggle();
       return;
     }
 
@@ -649,6 +965,7 @@
     initSplitText();
     initDiamondDraw();
     initCardTilt();
+    initVisualLayers();
 
     /* Show UI after brief delay */
     setTimeout(function () {
@@ -672,5 +989,6 @@
     initArrowNav();
     initTouchNav();
     initWheelNav();
+    initSideNavToggle();
   });
 })();

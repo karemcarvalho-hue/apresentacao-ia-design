@@ -214,7 +214,7 @@ a { text-decoration: none; color: inherit; }
   position: fixed;
   right: 0;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateX(100%);
   z-index: 1000;
   padding: 10px;
   border-radius: var(--r-lg) 0 0 var(--r-lg);
@@ -224,11 +224,15 @@ a { text-decoration: none; color: inherit; }
   border: 1px solid var(--border-glass);
   border-right: none;
   opacity: 0;
-  transition: opacity 0.5s var(--ease-out);
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-out),
+              transform 0.4s var(--ease-out);
 }
 
 .side-nav--visible {
   opacity: 1;
+  transform: translateY(-50%) translateX(0);
+  pointer-events: auto;
 }
 
 .side-nav__track {
@@ -706,7 +710,7 @@ a { text-decoration: none; color: inherit; }
 
 .glass--wide {
   width: 100%;
-  padding: 2.5rem;
+  padding: 1.75rem 2rem;
 }
 
 
@@ -831,12 +835,13 @@ a { text-decoration: none; color: inherit; }
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.75rem;
   color: var(--text-3);
 }
 
 .compare-label--accent {
   color: var(--purple-400);
+  margin-bottom: 0.75rem;
 }
 
 
@@ -1024,19 +1029,6 @@ a { text-decoration: none; color: inherit; }
   pointer-events: none;
 }
 
-/* Subtle dashed outer glow ring */
-.orbit-ring::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 410px;
-  height: 410px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  border: 1px dashed rgba(139, 92, 246, 0.15);
-  pointer-events: none;
-}
 
 .orbit-tag {
   position: absolute;
@@ -1188,6 +1180,282 @@ a { text-decoration: none; color: inherit; }
   font-size: var(--fs-xs);
   color: var(--text-3);
   letter-spacing: 0.04em;
+}
+
+
+/* ============================================================
+   CORE SECTION — DENIAL ROW (slide 16)
+   ============================================================ */
+.core-denial-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 720px;
+  width: 100%;
+}
+
+.core-denial-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: var(--r-full);
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: var(--fs-body);
+  font-weight: 500;
+  color: var(--text-2);
+  transition: all 0.4s var(--ease-out);
+}
+
+.core-denial-card svg {
+  color: var(--red);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.core-denial-card:hover {
+  border-color: rgba(249, 112, 102, 0.25);
+  box-shadow: 0 0 20px rgba(249, 112, 102, 0.08);
+}
+
+
+/* ============================================================
+   CORE SECTION — ACTION ROW (slide 17)
+   ============================================================ */
+.core-action-row {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 720px;
+  width: 100%;
+}
+
+.core-action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--r-lg);
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  min-width: 100px;
+  transition: all 0.4s var(--ease-out);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.core-action-card svg {
+  color: var(--purple-400);
+  opacity: 0.7;
+}
+
+.core-action-card span {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+}
+
+.core-action-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(120, 80, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2),
+              0 0 24px rgba(120, 80, 255, 0.08);
+}
+
+.core-action-card:hover svg {
+  opacity: 1;
+}
+
+.core-action-card:hover span {
+  color: var(--text-1);
+}
+
+
+/* ============================================================
+   DUALITY GRID (slide 18 — deny vs affirm cards)
+   ============================================================ */
+.duality-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 640px;
+  width: 100%;
+}
+
+.duality-card {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-lg);
+  padding: 2rem 1.75rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: transform 0.4s var(--ease-out),
+              box-shadow 0.4s var(--ease-out),
+              border-color 0.4s var(--ease-out);
+}
+
+.duality-card:hover {
+  transform: translateY(-4px);
+}
+
+.duality-card--deny:hover {
+  border-color: rgba(249, 112, 102, 0.2);
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.25),
+              0 0 30px rgba(249, 112, 102, 0.06);
+}
+
+.duality-card--affirm:hover {
+  border-color: rgba(120, 80, 255, 0.25);
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.25),
+              0 0 30px rgba(120, 80, 255, 0.08);
+}
+
+.duality-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.duality-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.duality-card__icon--deny {
+  background: rgba(249, 112, 102, 0.12);
+  color: var(--red);
+  box-shadow: 0 0 16px rgba(249, 112, 102, 0.10);
+}
+
+.duality-card__icon--affirm {
+  background: rgba(120, 80, 255, 0.12);
+  color: var(--purple-400);
+  box-shadow: 0 0 16px rgba(120, 80, 255, 0.10);
+}
+
+.duality-card__label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.duality-card--deny .duality-card__label {
+  color: var(--red);
+  opacity: 0.7;
+}
+
+.duality-card--affirm .duality-card__label {
+  color: var(--purple-400);
+}
+
+.duality-card__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.duality-card__item {
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  font-weight: 500;
+  line-height: 1.4;
+  padding-left: 0.25rem;
+}
+
+.duality-card--deny .duality-card__item {
+  color: var(--text-3);
+}
+
+.duality-card--affirm .duality-card__item {
+  color: var(--text-1);
+}
+
+
+/* ============================================================
+   ROLE CARDS (slide 20 — novo papel)
+   ============================================================ */
+.role-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  max-width: 720px;
+  width: 100%;
+}
+
+.role-card {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-lg);
+  padding: 2rem 1.25rem 1.75rem;
+  text-align: center;
+  transition: all 0.4s var(--ease-out);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+}
+
+.role-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(120, 80, 255, 0.20);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22),
+              0 0 32px rgba(120, 80, 255, 0.06);
+}
+
+.role-card--accent {
+  border-color: rgba(120, 80, 255, 0.15);
+  background: rgba(120, 80, 255, 0.05);
+}
+
+.role-card--accent:hover {
+  border-color: rgba(120, 80, 255, 0.30);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22),
+              0 0 40px rgba(120, 80, 255, 0.12);
+}
+
+.role-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-sm);
+  background: rgba(120, 80, 255, 0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--purple-400);
+  margin: 0 auto 1rem;
+  box-shadow: 0 0 18px rgba(120, 80, 255, 0.08);
+}
+
+.role-card__title {
+  font-size: var(--fs-body);
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.role-card__desc {
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--text-3);
+  line-height: 1.5;
 }
 
 
@@ -1487,11 +1755,6 @@ a { text-decoration: none; color: inherit; }
     height: 310px;
   }
 
-  .orbit-ring::after {
-    width: 340px;
-    height: 340px;
-  }
-
   .orbit-tag {
     transform:
       rotate(var(--angle))
@@ -1504,6 +1767,26 @@ a { text-decoration: none; color: inherit; }
 
   .diamond-visual {
     max-width: 480px;
+  }
+
+  /* VFX responsive — tablet */
+  .vfx-neural {
+    width: 80%;
+    height: 45%;
+  }
+
+  .vfx-orbit-circle {
+    width: 35%;
+    max-width: 300px;
+  }
+
+  .vfx-blocks {
+    width: 28%;
+  }
+
+  .vfx-center-light {
+    width: 400px;
+    height: 400px;
   }
 
   .slide-counter,
@@ -1538,6 +1821,47 @@ a { text-decoration: none; color: inherit; }
   .negation-item,
   .quality-item {
     font-size: clamp(1.15rem, 4vw, 1.6rem);
+  }
+
+  .core-denial-row {
+    gap: 0.6rem;
+  }
+
+  .core-denial-card {
+    padding: 10px 16px;
+    font-size: var(--fs-small);
+  }
+
+  .core-action-row {
+    gap: 0.5rem;
+  }
+
+  .core-action-card {
+    padding: 1rem 1rem;
+    min-width: 80px;
+  }
+
+  .core-action-card span {
+    font-size: var(--fs-xs);
+  }
+
+  .duality-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .duality-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .role-cards {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    max-width: 320px;
+  }
+
+  .role-card {
+    padding: 1.5rem 1rem 1.25rem;
   }
 
   .logo-cloud {
@@ -1590,11 +1914,6 @@ a { text-decoration: none; color: inherit; }
   .orbit-ring::before {
     width: 250px;
     height: 250px;
-  }
-
-  .orbit-ring::after {
-    width: 275px;
-    height: 275px;
   }
 
   .orbit-tag {
@@ -1688,6 +2007,383 @@ a { text-decoration: none; color: inherit; }
     width: 250px;
     height: 250px;
   }
+
+  /* VFX responsive — mobile */
+  .vfx-neural {
+    width: 90%;
+    height: 40%;
+    opacity: 0.08;
+  }
+
+  .vfx-orbit-circle {
+    width: 30%;
+    right: 2%;
+  }
+
+  .vfx-logo-cluster {
+    display: none;
+  }
+
+  .vfx-blocks {
+    width: 25%;
+    left: 2%;
+  }
+
+  .vfx-center-light {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+
+/* ============================================================
+   VFX — VISUAL LAYERS (decorative, atmospheric)
+   All classes prefixed with vfx- to avoid collisions.
+   Elements are position:absolute inside each .slide.
+   ============================================================ */
+
+/* --- Shared base --- */
+.vfx-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ---- 1. SLIDE 1 — Neural Network ---- */
+.vfx-neural {
+  position: absolute;
+  width: 70%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 1.2s ease;
+}
+
+.vfx-active .vfx-neural {
+  opacity: 0.12;
+}
+
+.vfx-neural svg {
+  width: 100%;
+  height: 100%;
+}
+
+.vfx-neural line {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 1;
+  stroke-dasharray: var(--vfx-dash);
+  stroke-dashoffset: var(--vfx-dash);
+  transition: stroke-dashoffset 3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vfx-active .vfx-neural line {
+  stroke-dashoffset: 0;
+}
+
+.vfx-neural circle {
+  fill: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  filter: drop-shadow(0 0 4px rgba(123, 97, 255, 0.5));
+}
+
+.vfx-active .vfx-neural circle {
+  opacity: 1;
+  transition-delay: var(--vfx-node-delay, 2s);
+}
+
+@keyframes vfx-neural-float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-2px); }
+}
+
+.vfx-active .vfx-neural {
+  animation: vfx-neural-float 8s ease-in-out infinite;
+  animation-delay: 3.5s;
+}
+
+
+/* ---- 2. SLIDE 5 — Rotating Incomplete Circle ---- */
+.vfx-orbit-circle {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40%;
+  aspect-ratio: 1 / 1;
+  max-width: 400px;
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+.vfx-active .vfx-orbit-circle {
+  opacity: 0.18;
+}
+
+.vfx-orbit-circle__glow {
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(123, 97, 255, 0.12), transparent 70%);
+  filter: blur(60px);
+}
+
+.vfx-orbit-circle svg {
+  width: 100%;
+  height: 100%;
+  animation: vfx-orbit-rotate 20s linear infinite;
+  animation-play-state: paused;
+}
+
+.vfx-active .vfx-orbit-circle svg {
+  animation-play-state: running;
+}
+
+@keyframes vfx-orbit-rotate {
+  to { transform: rotate(360deg); }
+}
+
+.vfx-orbit-circle .vfx-ring-base {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 1;
+  stroke-dasharray: 600 200;
+}
+
+.vfx-orbit-circle .vfx-ring-glow {
+  fill: none;
+  stroke: rgba(123, 97, 255, 0.7);
+  stroke-width: 2;
+  stroke-dasharray: 80 720;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(123, 97, 255, 0.6));
+}
+
+
+/* ---- 3. SLIDE 8 — Floating Logo Cluster ---- */
+.vfx-logo-cluster {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.vfx-active .vfx-logo-cluster {
+  opacity: 1;
+}
+
+.vfx-logo-float {
+  position: absolute;
+  font-family: var(--font);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  user-select: none;
+  animation-play-state: paused;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.vfx-active .vfx-logo-float {
+  animation-play-state: running;
+}
+
+/* Parallax layer depths — primary (slide 9, strong) */
+.vfx-logo-cluster--primary .vfx-logo-float--back {
+  opacity: 0.10;
+  filter: blur(1.5px);
+  font-size: 0.85rem;
+}
+
+.vfx-logo-cluster--primary .vfx-logo-float--mid {
+  opacity: 0.16;
+  font-size: 1.1rem;
+}
+
+.vfx-logo-cluster--primary .vfx-logo-float--front {
+  opacity: 0.22;
+  font-size: 1.3rem;
+}
+
+/* Parallax layer depths — subtle (slide 8, backdrop) */
+.vfx-logo-cluster--subtle .vfx-logo-float--back {
+  opacity: 0.04;
+  filter: blur(2px);
+  font-size: 0.7rem;
+}
+
+.vfx-logo-cluster--subtle .vfx-logo-float--mid {
+  opacity: 0.07;
+  font-size: 0.85rem;
+}
+
+.vfx-logo-cluster--subtle .vfx-logo-float--front {
+  opacity: 0.10;
+  font-size: 1rem;
+}
+
+/* 6 different float paths for variety */
+@keyframes vfx-float-1 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(3px, -6px); }
+  50% { transform: translate(-2px, -3px); }
+  75% { transform: translate(4px, -8px); }
+}
+
+@keyframes vfx-float-2 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-4px, -5px); }
+  50% { transform: translate(2px, -8px); }
+  75% { transform: translate(-3px, -4px); }
+}
+
+@keyframes vfx-float-3 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(5px, -4px); }
+  50% { transform: translate(-3px, -7px); }
+  75% { transform: translate(2px, -3px); }
+}
+
+@keyframes vfx-float-4 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, -8px); }
+  50% { transform: translate(4px, -5px); }
+  75% { transform: translate(-5px, -6px); }
+}
+
+@keyframes vfx-float-5 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(3px, -7px); }
+  50% { transform: translate(-4px, -4px); }
+  75% { transform: translate(5px, -6px); }
+}
+
+@keyframes vfx-float-6 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-3px, -5px); }
+  50% { transform: translate(5px, -8px); }
+  75% { transform: translate(-2px, -3px); }
+}
+
+
+/* ---- 4. MICRO-ILLUSTRATIONS (REMOVED) ---- */
+
+
+/* ---- 5. SLIDE 18 — Connected Blocks ---- */
+.vfx-blocks {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35%;
+  max-width: 320px;
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+.vfx-active .vfx-blocks {
+  opacity: 0.15;
+}
+
+.vfx-blocks svg {
+  width: 100%;
+  height: auto;
+}
+
+.vfx-blocks rect {
+  fill: rgba(255, 255, 255, 0.06);
+  stroke: rgba(123, 97, 255, 0.35);
+  stroke-width: 1;
+  rx: 4;
+}
+
+.vfx-blocks line {
+  stroke: rgba(123, 97, 255, 0.3);
+  stroke-width: 0.8;
+  stroke-dasharray: var(--vfx-bl);
+  stroke-dashoffset: var(--vfx-bl);
+  transition: stroke-dashoffset 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vfx-active .vfx-blocks line {
+  stroke-dashoffset: 0;
+}
+
+@keyframes vfx-block-pulse {
+  0%, 100% { opacity: 0.5; filter: drop-shadow(0 0 0px transparent); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(123, 97, 255, 0.3)); }
+}
+
+.vfx-active .vfx-blocks .vfx-block-glow-1 { animation: vfx-block-pulse 12s ease-in-out infinite 1s; }
+.vfx-active .vfx-blocks .vfx-block-glow-2 { animation: vfx-block-pulse 12s ease-in-out infinite 4s; }
+.vfx-active .vfx-blocks .vfx-block-glow-3 { animation: vfx-block-pulse 12s ease-in-out infinite 7s; }
+
+
+/* ---- 6. SLIDE 20 — Growing Central Light ---- */
+.vfx-center-light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(123, 97, 255, 0.18), transparent 70%);
+  filter: blur(80px);
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+.vfx-active .vfx-center-light {
+  opacity: 1;
+  animation: vfx-breathe-light 8s ease-in-out infinite;
+}
+
+@keyframes vfx-breathe-light {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.08; }
+  50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.16; }
+}
+
+
+/* ---- 7. SLIDES 21-22 — Diagonal Light Sweep ---- */
+.vfx-sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.06) 40%, rgba(200, 180, 255, 0.10) 50%, rgba(255, 255, 255, 0.06) 60%, transparent 100%);
+  filter: blur(1px);
+  transform: translate(-50%, -50%) rotate(15deg) translateX(-120%);
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+.vfx-active .vfx-sweep {
+  opacity: 0.5;
+  animation: vfx-sweep 12s ease-in-out infinite;
+}
+
+@keyframes vfx-sweep {
+  0% { transform: translate(-50%, -50%) rotate(15deg) translateX(-120%); }
+  100% { transform: translate(-50%, -50%) rotate(15deg) translateX(120%); }
 }
 
 
@@ -1733,5 +2429,15 @@ a { text-decoration: none; color: inherit; }
 
   .atmosphere__orb {
     animation: none;
+  }
+
+  /* VFX — disable all visual layers */
+  .vfx-neural,
+  .vfx-orbit-circle,
+  .vfx-logo-cluster,
+  .vfx-blocks,
+  .vfx-center-light,
+  .vfx-sweep {
+    display: none !important;
   }
 }
