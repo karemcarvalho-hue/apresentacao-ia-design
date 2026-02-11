@@ -1192,6 +1192,117 @@ a { text-decoration: none; color: inherit; }
 
 
 /* ============================================================
+   ANXIETY SEQUENCE (slide 8 — rhythm list)
+   ============================================================ */
+.anxiety-sequence {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.anxiety-step {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-weight: 500;
+  color: var(--text-3);
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+.anxiety-step--last {
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   LOGO CLOUD (scattered tool pills)
+   ============================================================ */
+.logo-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+.logo-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: var(--r-full);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-3);
+  transition: all 0.4s var(--ease-out);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.logo-pill__icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.logo-pill:hover {
+  border-color: rgba(120, 80, 255, 0.25);
+  color: var(--purple-400);
+  box-shadow: 0 0 24px rgba(120, 80, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.logo-pill--sm {
+  font-size: 0.88rem;
+  padding: 10px 20px;
+  gap: 8px;
+  opacity: 0.5;
+}
+
+.logo-pill--sm .logo-pill__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.logo-pill--md {
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  gap: 9px;
+  opacity: 0.7;
+}
+
+.logo-pill--md .logo-pill__icon {
+  width: 22px;
+  height: 22px;
+}
+
+.logo-pill--lg {
+  font-size: 1.1rem;
+  padding: 14px 28px;
+  gap: 10px;
+  opacity: 0.9;
+  color: var(--text-2);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.logo-pill--lg .logo-pill__icon {
+  width: 26px;
+  height: 26px;
+}
+
+
+/* ============================================================
    ANIMATIONS
    ============================================================ */
 
@@ -1285,6 +1396,18 @@ a { text-decoration: none; color: inherit; }
 [data-stagger].visible > *:nth-child(6)  { transition-delay: 450ms; }
 [data-stagger].visible > *:nth-child(7)  { transition-delay: 570ms; }
 [data-stagger].visible > *:nth-child(8)  { transition-delay: 700ms; }
+[data-stagger].visible > *:nth-child(9)  { transition-delay: 780ms; }
+[data-stagger].visible > *:nth-child(10) { transition-delay: 850ms; }
+[data-stagger].visible > *:nth-child(11) { transition-delay: 910ms; }
+[data-stagger].visible > *:nth-child(12) { transition-delay: 960ms; }
+[data-stagger].visible > *:nth-child(13) { transition-delay: 1010ms; }
+[data-stagger].visible > *:nth-child(14) { transition-delay: 1050ms; }
+[data-stagger].visible > *:nth-child(15) { transition-delay: 1090ms; }
+[data-stagger].visible > *:nth-child(16) { transition-delay: 1130ms; }
+[data-stagger].visible > *:nth-child(17) { transition-delay: 1160ms; }
+[data-stagger].visible > *:nth-child(18) { transition-delay: 1190ms; }
+[data-stagger].visible > *:nth-child(19) { transition-delay: 1220ms; }
+[data-stagger].visible > *:nth-child(20) { transition-delay: 1250ms; }
 
 /* --- Stagger for tool cards (scale variant) --- */
 [data-stagger-scale] > * {
@@ -1415,6 +1538,44 @@ a { text-decoration: none; color: inherit; }
   .negation-item,
   .quality-item {
     font-size: clamp(1.15rem, 4vw, 1.6rem);
+  }
+
+  .logo-cloud {
+    gap: 0.5rem;
+    max-width: 100%;
+  }
+
+  .logo-pill--sm {
+    font-size: 0.72rem;
+    padding: 7px 14px;
+    gap: 5px;
+  }
+
+  .logo-pill--sm .logo-pill__icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .logo-pill--md {
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    gap: 6px;
+  }
+
+  .logo-pill--md .logo-pill__icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .logo-pill--lg {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    gap: 7px;
+  }
+
+  .logo-pill--lg .logo-pill__icon {
+    width: 20px;
+    height: 20px;
   }
 
   .pillar-grid {
