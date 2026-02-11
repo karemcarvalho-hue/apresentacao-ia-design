@@ -1,11 +1,109 @@
 /**
  * IA & Design — Presentation Deck
- * Scroll-snap driven animations & navigation
+ * Horizontal slide navigation with premium transitions
+ * Includes star particle system for cosmic atmosphere
  */
 (function () {
   'use strict';
 
-  /* Total slide count (used for reference) */
+  /* -------------------------------------------------------
+     STATE
+     ------------------------------------------------------- */
+  var currentIndex = 0;
+  var isTransitioning = false;
+  var totalSlides = 0;
+
+  /* DOM references (set in init) */
+  var track = null;
+  var slides = [];
+  var navItems = [];
+  var progressFill = null;
+  var counterCurrent = null;
+  var prevArrow = null;
+  var nextArrow = null;
+  var keyHint = null;
+  var sideNav = null;
+  var slideCounter = null;
+
+
+  /* -------------------------------------------------------
+     STAR PARTICLE SYSTEM
+     Subtle floating dots simulating a deep star field.
+     Very slow vertical drift, low opacity.
+     ------------------------------------------------------- */
+  function initStarCanvas() {
+    var canvas = document.getElementById('starsCanvas');
+    if (!canvas) return;
+
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var particleCount = 120;
+    var animFrameId = null;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+      particles = [];
+      for (var i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.2 + 0.3,
+          opacity: Math.random() * 0.25 + 0.1,
+          speed: Math.random() * 0.15 + 0.05,
+          drift: (Math.random() - 0.5) * 0.03,
+          twinkleSpeed: Math.random() * 0.005 + 0.002,
+          twinklePhase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function draw(timestamp) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+
+        /* Very slow upward drift */
+        p.y -= p.speed;
+        p.x += p.drift;
+
+        /* Subtle twinkle */
+        var twinkle = Math.sin(timestamp * p.twinkleSpeed + p.twinklePhase);
+        var currentOpacity = p.opacity + twinkle * 0.08;
+        if (currentOpacity < 0.05) currentOpacity = 0.05;
+
+        /* Wrap around */
+        if (p.y < -5) {
+          p.y = canvas.height + 5;
+          p.x = Math.random() * canvas.width;
+        }
+        if (p.x < -5) p.x = canvas.width + 5;
+        if (p.x > canvas.width + 5) p.x = -5;
+
+        /* Draw the star */
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(200, 190, 255, ' + currentOpacity + ')';
+        ctx.fill();
+      }
+
+      animFrameId = requestAnimationFrame(draw);
+    }
+
+    resize();
+    createParticles();
+    animFrameId = requestAnimationFrame(draw);
+
+    window.addEventListener('resize', function () {
+      resize();
+      createParticles();
+    });
+  }
+
 
   /* -------------------------------------------------------
      1. SPLIT TEXT ENGINE
@@ -38,7 +136,7 @@
             var w = document.createElement('span');
             w.className = 'word';
             w.textContent = part;
-            w.style.transitionDelay = (wordIndex * 40) + 'ms';
+            w.style.transitionDelay = (wordIndex * 45) + 'ms';
             wordIndex++;
             fragment.appendChild(w);
           }
@@ -46,6 +144,12 @@
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         if (node.tagName === 'BR') {
           fragment.appendChild(node.cloneNode());
+        } else if (node.classList && (node.classList.contains('gradient') || node.classList.contains('accent') || node.classList.contains('muted'))) {
+          var styledClone = node.cloneNode(true);
+          styledClone.classList.add('word');
+          styledClone.style.transitionDelay = (wordIndex * 45) + 'ms';
+          wordIndex++;
+          fragment.appendChild(styledClone);
         } else {
           var clone = node.cloneNode(false);
           var innerNodes = Array.prototype.slice.call(node.childNodes);
@@ -63,7 +167,7 @@
                   var ws = document.createElement('span');
                   ws.className = 'word';
                   ws.textContent = part;
-                  ws.style.transitionDelay = (wordIndex * 40) + 'ms';
+                  ws.style.transitionDelay = (wordIndex * 45) + 'ms';
                   wordIndex++;
                   clone.appendChild(ws);
                 }
@@ -83,291 +187,243 @@
 
 
   /* -------------------------------------------------------
-     2. SCROLL PROGRESS BAR
+     2. CORE NAVIGATION — goToSlide
+     Premium horizontal transition with content fade
      ------------------------------------------------------- */
-  function initScrollProgress() {
-    var fill = document.querySelector('.progress__fill');
-    if (!fill) return;
+  function goToSlide(index) {
+    if (isTransitioning) return;
+    if (index < 0 || index >= totalSlides) return;
+    if (index === currentIndex) return;
 
-    var ticking = false;
+    var prevIndex = currentIndex;
+    var direction = index > prevIndex ? 1 : -1;
+    isTransitioning = true;
+    currentIndex = index;
 
-    function update() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      fill.style.width = Math.min(pct, 100) + '%';
-      ticking = false;
-    }
+    /* Reset animations on the previous slide */
+    resetSlideAnimations(prevIndex);
 
-    window.addEventListener('scroll', function () {
-      if (!ticking) {
-        window.requestAnimationFrame(update);
-        ticking = true;
-      }
-    }, { passive: true });
+    /* Move the track */
+    track.style.transform = 'translateX(-' + (currentIndex * 100) + 'vw)';
 
-    update();
+    /* Update UI immediately */
+    updateProgress();
+    updateCounter();
+    updateNavActive();
+    updateArrows();
+
+    /* Trigger animations on the new slide after the track transition */
+    setTimeout(function () {
+      activateSlideAnimations(currentIndex);
+      isTransitioning = false;
+    }, 720);
+
+    /* Parallax glow on previous slide direction */
+    applyGlowParallax(prevIndex, currentIndex);
+  }
+
+  function goNext() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function goPrev() {
+    goToSlide(currentIndex - 1);
   }
 
 
   /* -------------------------------------------------------
-     3. INTERSECTION OBSERVER FOR ANIMATIONS
-     Triggers .visible / .split-visible on elements
-     with data-animate, data-stagger, data-stagger-scale.
+     3. PROGRESS BAR
      ------------------------------------------------------- */
-  function initScrollAnimations() {
-    var targets = document.querySelectorAll(
+  function updateProgress() {
+    if (!progressFill) return;
+    var pct = totalSlides > 1 ? (currentIndex / (totalSlides - 1)) * 100 : 0;
+    progressFill.style.width = Math.min(pct, 100) + '%';
+  }
+
+
+  /* -------------------------------------------------------
+     4. SLIDE COUNTER
+     ------------------------------------------------------- */
+  function updateCounter() {
+    if (!counterCurrent) return;
+    counterCurrent.textContent = String(currentIndex + 1).padStart(2, '0');
+  }
+
+
+  /* -------------------------------------------------------
+     5. SIDE NAV — active state
+     ------------------------------------------------------- */
+  function updateNavActive() {
+    if (navItems.length === 0) return;
+    var chapter = slides[currentIndex].getAttribute('data-chapter');
+
+    navItems.forEach(function (item) {
+      if (item.getAttribute('data-nav') === chapter) {
+        item.classList.add('side-nav__item--active');
+      } else {
+        item.classList.remove('side-nav__item--active');
+      }
+    });
+  }
+
+
+  /* -------------------------------------------------------
+     6. ARROW VISIBILITY
+     ------------------------------------------------------- */
+  function updateArrows() {
+    if (!prevArrow || !nextArrow) return;
+
+    if (currentIndex === 0) {
+      prevArrow.classList.add('nav-arrow--hidden');
+    } else {
+      prevArrow.classList.remove('nav-arrow--hidden');
+    }
+
+    if (currentIndex === totalSlides - 1) {
+      nextArrow.classList.add('nav-arrow--hidden');
+    } else {
+      nextArrow.classList.remove('nav-arrow--hidden');
+    }
+  }
+
+
+  /* -------------------------------------------------------
+     7. SLIDE ANIMATIONS
+     Activates data-animate, data-stagger, etc. for a slide.
+     ------------------------------------------------------- */
+  function activateSlideAnimations(index) {
+    var slide = slides[index];
+    if (!slide) return;
+
+    var targets = slide.querySelectorAll(
       '[data-animate], [data-stagger], [data-stagger-scale]'
     );
 
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var el = entry.target;
-          if (el.getAttribute('data-animate') === 'words') {
-            el.classList.add('split-visible');
-          } else {
-            el.classList.add('visible');
-          }
-          observer.unobserve(el);
-        }
-      });
-    }, {
-      root: null,
-      rootMargin: '0px 0px -60px 0px',
-      threshold: 0.12
+    targets.forEach(function (el) {
+      if (el.getAttribute('data-animate') === 'words') {
+        el.classList.add('split-visible');
+      } else {
+        el.classList.add('visible');
+      }
     });
+
+    /* Diamond draw */
+    var diamondVisual = slide.querySelector('.diamond-visual');
+    if (diamondVisual) {
+      var paths = diamondVisual.querySelectorAll('.diamond-path');
+      paths.forEach(function (path, idx) {
+        path.style.transition = 'stroke-dashoffset ' +
+          (1.4 + idx * 0.3) + 's cubic-bezier(0.16, 1, 0.3, 1) ' +
+          (idx * 0.25) + 's';
+        path.style.strokeDashoffset = '0';
+      });
+    }
+
+    /* Orbit sequence */
+    var orbitContainer = slide.querySelector('.orbit-container');
+    if (orbitContainer) {
+      var tags = orbitContainer.querySelectorAll('.orbit-tag');
+      tags.forEach(function (tag, idx) {
+        setTimeout(function () {
+          tag.classList.add('orbit-tag--active');
+        }, 350 + idx * 200);
+      });
+    }
+  }
+
+
+  /* -------------------------------------------------------
+     7b. RESET SLIDE ANIMATIONS
+     Removes visible classes so re-entry animates again.
+     ------------------------------------------------------- */
+  function resetSlideAnimations(index) {
+    var slide = slides[index];
+    if (!slide) return;
+
+    var targets = slide.querySelectorAll(
+      '[data-animate], [data-stagger], [data-stagger-scale]'
+    );
 
     targets.forEach(function (el) {
-      observer.observe(el);
+      el.classList.remove('visible');
+      el.classList.remove('split-visible');
+    });
+
+    /* Reset orbit tags */
+    var orbitTags = slide.querySelectorAll('.orbit-tag');
+    orbitTags.forEach(function (tag) {
+      tag.classList.remove('orbit-tag--active');
+    });
+
+    /* Reset diamond paths */
+    var paths = slide.querySelectorAll('.diamond-path');
+    paths.forEach(function (path) {
+      var length = path.getTotalLength();
+      path.style.transition = 'none';
+      path.style.strokeDashoffset = String(length);
     });
   }
 
 
   /* -------------------------------------------------------
-     4. SIDE NAVIGATION
-     - Shows/hides based on scroll position
-     - Tracks active chapter based on visible slides
-     - Click to scroll to chapter's first slide
+     8. GLOW PARALLAX
+     Subtle horizontal parallax of glow blobs based on
+     slide transition direction.
      ------------------------------------------------------- */
-  function initSideNav() {
-    var nav = document.querySelector('.side-nav');
-    var items = document.querySelectorAll('.side-nav__item');
-    var slides = document.querySelectorAll('.slide');
-    var counter = document.querySelector('.slide-counter');
-    var currentEl = document.querySelector('.slide-counter__current');
-    var keyHint = document.querySelector('.key-hint');
+  function applyGlowParallax(fromIdx, toIdx) {
+    var direction = toIdx > fromIdx ? -1 : 1;
 
-    if (!nav || items.length === 0) return;
+    /* Apply parallax offset to the target slide's glows */
+    var targetSlide = slides[toIdx];
+    if (!targetSlide) return;
 
-    var shown = false;
+    var glows = targetSlide.querySelectorAll('.slide__glow');
+    glows.forEach(function (glow) {
+      var isCenter = glow.classList.contains('slide__glow--center');
+      var offset = direction * 50;
 
-    function checkVisibility() {
-      var scrollY = window.pageYOffset;
-      if (scrollY > window.innerHeight * 0.25) {
-        if (!shown) {
-          nav.classList.add('side-nav--visible');
-          if (counter) counter.classList.add('slide-counter--visible');
-          if (keyHint) keyHint.classList.add('key-hint--visible');
-          shown = true;
-        }
+      /* Start offset */
+      if (isCenter) {
+        glow.style.transition = 'none';
+        glow.style.transform = 'translate(calc(-50% + ' + offset + 'px), -50%)';
       } else {
-        if (shown) {
-          nav.classList.remove('side-nav--visible');
-          if (counter) counter.classList.remove('slide-counter--visible');
-          if (keyHint) keyHint.classList.remove('key-hint--visible');
-          shown = false;
-        }
+        glow.style.transition = 'none';
+        glow.style.transform = 'translateX(' + offset + 'px)';
       }
-    }
 
-    window.addEventListener('scroll', checkVisibility, { passive: true });
-    checkVisibility();
-
-    // Click navigation
-    items.forEach(function (item) {
-      item.addEventListener('click', function () {
-        var target = item.getAttribute('data-nav');
-        var firstSlide = document.querySelector('[data-chapter="' + target + '"]');
-        if (firstSlide) {
-          firstSlide.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-
-    // Track active chapter on scroll
-    var slideObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var chapter = entry.target.getAttribute('data-chapter');
-          var slideNum = entry.target.getAttribute('data-slide');
-
-          // Update nav active state
-          items.forEach(function (item) {
-            if (item.getAttribute('data-nav') === chapter) {
-              item.classList.add('side-nav__item--active');
-            } else {
-              item.classList.remove('side-nav__item--active');
-            }
-          });
-
-          // Update counter
-          if (currentEl && slideNum) {
-            currentEl.textContent = slideNum.padStart(2, '0');
+      /* Animate back to origin */
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          glow.style.transition = 'transform 1000ms cubic-bezier(0.16, 1, 0.3, 1)';
+          if (isCenter) {
+            glow.style.transform = 'translate(-50%, -50%)';
+          } else {
+            glow.style.transform = 'translateX(0)';
           }
-        }
+        });
       });
-    }, {
-      root: null,
-      rootMargin: '-40% 0px -40% 0px',
-      threshold: 0
-    });
-
-    slides.forEach(function (slide) {
-      slideObserver.observe(slide);
     });
   }
 
 
   /* -------------------------------------------------------
-     5. KEYBOARD NAVIGATION
-     Arrow Up/Down navigate between slides.
-     ------------------------------------------------------- */
-  function initKeyboardNav() {
-    var slides = document.querySelectorAll('.slide');
-    if (slides.length === 0) return;
-
-    function getCurrentSlideIndex() {
-      var scrollY = window.pageYOffset + window.innerHeight / 2;
-      for (var i = slides.length - 1; i >= 0; i--) {
-        if (slides[i].offsetTop <= scrollY) return i;
-      }
-      return 0;
-    }
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
-        e.preventDefault();
-        var next = Math.min(getCurrentSlideIndex() + 1, slides.length - 1);
-        slides[next].scrollIntoView({ behavior: 'smooth' });
-      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        var prev = Math.max(getCurrentSlideIndex() - 1, 0);
-        slides[prev].scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  }
-
-
-  /* -------------------------------------------------------
-     6. DOUBLE DIAMOND SVG DRAW
+     9. DIAMOND SVG — init dasharray
      ------------------------------------------------------- */
   function initDiamondDraw() {
     var visual = document.querySelector('.diamond-visual');
     if (!visual) return;
 
     var paths = visual.querySelectorAll('.diamond-path');
-
     paths.forEach(function (path) {
       var length = path.getTotalLength();
-      path.style.strokeDasharray = length;
-      path.style.strokeDashoffset = length;
+      path.style.strokeDasharray = String(length);
+      path.style.strokeDashoffset = String(length);
     });
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          paths.forEach(function (path, idx) {
-            var length = path.getTotalLength();
-            path.style.transition = 'stroke-dashoffset ' +
-              (1.4 + idx * 0.3) + 's cubic-bezier(0.16, 1, 0.3, 1) ' +
-              (idx * 0.25) + 's';
-            path.style.strokeDashoffset = '0';
-          });
-          observer.unobserve(visual);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    observer.observe(visual);
   }
 
 
   /* -------------------------------------------------------
-     7. ORBIT SEQUENTIAL ACTIVATION
-     ------------------------------------------------------- */
-  function initOrbitSequence() {
-    var container = document.querySelector('.orbit-container');
-    if (!container) return;
-
-    var tags = container.querySelectorAll('.orbit-tag');
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          tags.forEach(function (tag, idx) {
-            setTimeout(function () {
-              tag.classList.add('orbit-tag--active');
-            }, 300 + idx * 180);
-          });
-          observer.unobserve(container);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    observer.observe(container);
-  }
-
-
-  /* -------------------------------------------------------
-     8. GLOW PARALLAX
-     Subtle movement of glow blobs based on scroll.
-     ------------------------------------------------------- */
-  function initGlowParallax() {
-    var glows = document.querySelectorAll('.slide__glow');
-    if (glows.length === 0) return;
-
-    var ticking = false;
-
-    function onScroll() {
-      if (!ticking) {
-        window.requestAnimationFrame(function () {
-          var scrollY = window.pageYOffset;
-
-          glows.forEach(function (glow) {
-            var slide = glow.closest('.slide');
-            if (!slide) return;
-
-            var slideTop = slide.offsetTop;
-            var slideHeight = slide.offsetHeight;
-            var relative = scrollY - slideTop;
-
-            if (relative > -window.innerHeight && relative < slideHeight) {
-              var progress = relative / slideHeight;
-              var isCenter = glow.classList.contains('slide__glow--center');
-              var offset = isCenter ? progress * 30 : progress * 50;
-              var baseTransform = isCenter ? 'translate(-50%, -50%)' : '';
-
-              if (isCenter) {
-                glow.style.transform = 'translate(-50%, calc(-50% + ' + offset + 'px))';
-              } else {
-                glow.style.transform = 'translateY(' + offset + 'px)';
-              }
-            }
-          });
-
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
-
-
-  /* -------------------------------------------------------
-     9. CARD TILT EFFECT
+     10. CARD TILT EFFECT
      ------------------------------------------------------- */
   function initCardTilt() {
     var cards = document.querySelectorAll('.tool-card, .pillar-card');
@@ -378,45 +434,157 @@
         var x = (e.clientX - rect.left) / rect.width - 0.5;
         var y = (e.clientY - rect.top) / rect.height - 0.5;
         card.style.transform =
-          'perspective(600px) rotateX(' + (y * -3) + 'deg) rotateY(' + (x * 3) + 'deg) translateY(-2px)';
+          'perspective(600px) rotateX(' + (y * -3) + 'deg) rotateY(' + (x * 3) + 'deg) translateY(-8px)';
       });
 
       card.addEventListener('mouseleave', function () {
         card.style.transform = '';
-        card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1.36, 0.42, 0.99)';
+        card.style.transition = 'transform 0.6s cubic-bezier(0.22, 1.36, 0.42, 0.99)';
         setTimeout(function () {
           card.style.transition = '';
-        }, 500);
+        }, 600);
       });
     });
   }
 
 
   /* -------------------------------------------------------
-     10. HIDE KEYBOARD HINT AFTER FIRST INTERACTION
+     11. KEYBOARD NAVIGATION
      ------------------------------------------------------- */
-  function initKeyHintAutoHide() {
-    var hint = document.querySelector('.key-hint');
-    if (!hint) return;
+  function initKeyboardNav() {
+    var hintHidden = false;
 
-    var hidden = false;
-
-    function hide() {
-      if (!hidden) {
-        hidden = true;
-        setTimeout(function () {
-          hint.style.opacity = '0';
-          hint.style.transition = 'opacity 0.5s ease';
-        }, 3000);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault();
+        goNext();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        goPrev();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goToSlide(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        goToSlide(totalSlides - 1);
       }
+
+      /* Hide hint after first key press */
+      if (!hintHidden && keyHint) {
+        hintHidden = true;
+        setTimeout(function () {
+          keyHint.style.opacity = '0';
+          keyHint.style.transition = 'opacity 0.5s ease';
+        }, 2000);
+      }
+    });
+  }
+
+
+  /* -------------------------------------------------------
+     12. SIDE NAV CLICK
+     ------------------------------------------------------- */
+  function initSideNavClick() {
+    navItems.forEach(function (item) {
+      item.addEventListener('click', function () {
+        var target = item.getAttribute('data-nav');
+        /* Find first slide with this chapter */
+        for (var i = 0; i < slides.length; i++) {
+          if (slides[i].getAttribute('data-chapter') === target) {
+            goToSlide(i);
+            return;
+          }
+        }
+      });
+    });
+  }
+
+
+  /* -------------------------------------------------------
+     13. ARROW BUTTON CLICKS
+     ------------------------------------------------------- */
+  function initArrowNav() {
+    if (prevArrow) {
+      prevArrow.addEventListener('click', goPrev);
     }
+    if (nextArrow) {
+      nextArrow.addEventListener('click', goNext);
+    }
+  }
 
-    document.addEventListener('keydown', hide, { once: true });
 
-    var scrollCount = 0;
-    window.addEventListener('scroll', function () {
-      scrollCount++;
-      if (scrollCount > 3) hide();
+  /* -------------------------------------------------------
+     14. TOUCH / SWIPE SUPPORT
+     ------------------------------------------------------- */
+  function initTouchNav() {
+    var startX = 0;
+    var startY = 0;
+    var threshold = 50;
+
+    document.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', function (e) {
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+
+      /* Only horizontal swipes (ignore vertical) */
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
+        if (dx < 0) {
+          goNext();
+        } else {
+          goPrev();
+        }
+      }
+    }, { passive: true });
+  }
+
+
+  /* -------------------------------------------------------
+     15. SHOW UI ELEMENTS
+     ------------------------------------------------------- */
+  function showUI() {
+    if (sideNav) sideNav.classList.add('side-nav--visible');
+    if (slideCounter) slideCounter.classList.add('slide-counter--visible');
+    if (keyHint) keyHint.classList.add('key-hint--visible');
+    if (prevArrow) prevArrow.classList.add('nav-arrow--visible');
+    if (nextArrow) nextArrow.classList.add('nav-arrow--visible');
+  }
+
+
+  /* -------------------------------------------------------
+     16. MOUSE WHEEL NAVIGATION (throttled)
+     ------------------------------------------------------- */
+  function initWheelNav() {
+    var wheelTimeout = null;
+    var lastWheelTime = 0;
+    var wheelCooldown = 900; /* ms between allowed wheel navigations */
+
+    document.addEventListener('wheel', function (e) {
+      var now = Date.now();
+      if (now - lastWheelTime < wheelCooldown) return;
+
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        if (Math.abs(e.deltaY) > 30) {
+          lastWheelTime = now;
+          if (e.deltaY > 0) {
+            goNext();
+          } else {
+            goPrev();
+          }
+        }
+      } else {
+        if (Math.abs(e.deltaX) > 30) {
+          lastWheelTime = now;
+          if (e.deltaX > 0) {
+            goNext();
+          } else {
+            goPrev();
+          }
+        }
+      }
     }, { passive: true });
   }
 
@@ -427,36 +595,82 @@
   document.addEventListener('DOMContentLoaded', function () {
     var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    /* Cache DOM */
+    track = document.querySelector('.slides-track');
+    slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    navItems = Array.prototype.slice.call(document.querySelectorAll('.side-nav__item'));
+    progressFill = document.querySelector('.progress__fill');
+    counterCurrent = document.querySelector('.slide-counter__current');
+    prevArrow = document.querySelector('.nav-arrow--prev');
+    nextArrow = document.querySelector('.nav-arrow--next');
+    keyHint = document.querySelector('.key-hint');
+    sideNav = document.querySelector('.side-nav');
+    slideCounter = document.querySelector('.slide-counter');
+    totalSlides = slides.length;
+
+    /* Update total counter */
+    var totalEl = document.querySelector('.slide-counter__total');
+    if (totalEl) {
+      totalEl.textContent = String(totalSlides).padStart(2, '0');
+    }
+
+    /* Init star field (even with reduced motion, skip canvas) */
+    if (!prefersReducedMotion) {
+      initStarCanvas();
+    }
+
     if (prefersReducedMotion) {
-      // Show everything immediately
-      document.querySelectorAll('[data-animate], [data-stagger], [data-stagger-scale]').forEach(function (el) {
-        el.classList.add('visible');
-        if (el.getAttribute('data-animate') === 'words') {
-          el.classList.add('split-visible');
-        }
+      /* Show everything immediately */
+      slides.forEach(function (slide) {
+        slide.querySelectorAll('[data-animate], [data-stagger], [data-stagger-scale]').forEach(function (el) {
+          el.classList.add('visible');
+          if (el.getAttribute('data-animate') === 'words') {
+            el.classList.add('split-visible');
+          }
+        });
+        slide.querySelectorAll('.orbit-tag').forEach(function (t) {
+          t.classList.add('orbit-tag--active');
+        });
+        slide.querySelectorAll('.diamond-path').forEach(function (p) {
+          p.style.strokeDashoffset = '0';
+        });
       });
-      document.querySelectorAll('.orbit-tag').forEach(function (t) {
-        t.classList.add('orbit-tag--active');
-      });
-      document.querySelectorAll('.diamond-path').forEach(function (p) {
-        p.style.strokeDashoffset = '0';
-      });
-      // Navigation still works
-      initScrollProgress();
-      initSideNav();
+      showUI();
+      updateArrows();
       initKeyboardNav();
+      initSideNavClick();
+      initArrowNav();
+      initTouchNav();
+      initWheelNav();
       return;
     }
 
+    /* Normal init */
     initSplitText();
-    initScrollProgress();
-    initScrollAnimations();
-    initSideNav();
-    initKeyboardNav();
     initDiamondDraw();
-    initOrbitSequence();
-    initGlowParallax();
     initCardTilt();
-    initKeyHintAutoHide();
+
+    /* Show UI after brief delay */
+    setTimeout(function () {
+      showUI();
+      updateArrows();
+    }, 400);
+
+    /* Activate first slide animations */
+    setTimeout(function () {
+      activateSlideAnimations(0);
+    }, 250);
+
+    /* Update initial state */
+    updateProgress();
+    updateCounter();
+    updateNavActive();
+
+    /* Init interactions */
+    initKeyboardNav();
+    initSideNavClick();
+    initArrowNav();
+    initTouchNav();
+    initWheelNav();
   });
 })();
