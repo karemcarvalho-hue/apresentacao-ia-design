@@ -6,114 +6,180 @@
   <title>IA &amp; Design — O Novo Ciclo do Processo Criativo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- Floating ambient shapes -->
-  <div class="ambient" aria-hidden="true">
-    <div class="ambient__shape ambient__shape--1"></div>
-    <div class="ambient__shape ambient__shape--2"></div>
-    <div class="ambient__shape ambient__shape--3"></div>
-    <div class="ambient__shape ambient__shape--4"></div>
-    <div class="ambient__shape ambient__shape--5"></div>
+  <!-- Progress Bar -->
+  <div class="progress" aria-hidden="true">
+    <div class="progress__fill"></div>
   </div>
 
-  <!-- Scroll Progress -->
-  <div class="scroll-progress" aria-hidden="true">
-    <div class="scroll-progress__fill"></div>
-  </div>
-
-  <!-- Chapter Side Navigation -->
-  <nav class="chapter-nav" aria-label="Capítulos">
-    <button class="chapter-dot chapter-dot--active" data-target="abertura">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">Abertura</span>
-    </button>
-    <button class="chapter-dot" data-target="problema">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">Problema</span>
-    </button>
-    <button class="chapter-dot" data-target="ciclo">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">O Ciclo</span>
-    </button>
-    <button class="chapter-dot" data-target="ia-design">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">IA &amp; Design</span>
-    </button>
-    <button class="chapter-dot" data-target="discovery">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">Discovery</span>
-    </button>
-    <button class="chapter-dot" data-target="desenvolvimento">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">Desenvolvimento</span>
-    </button>
-    <button class="chapter-dot" data-target="testes">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">Testes</span>
-    </button>
-    <button class="chapter-dot" data-target="estrategia">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">Estratégia</span>
-    </button>
-    <button class="chapter-dot" data-target="novo-papel">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">Novo Papel</span>
-    </button>
-    <button class="chapter-dot" data-target="fechamento">
-      <span class="chapter-dot__pip"></span>
-      <span class="chapter-dot__label">Fechamento</span>
-    </button>
+  <!-- Side Navigation -->
+  <nav class="side-nav" aria-label="Seções">
+    <div class="side-nav__track">
+      <button class="side-nav__item side-nav__item--active" data-nav="abertura">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Abertura</span>
+      </button>
+      <button class="side-nav__item" data-nav="virada">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">A Virada</span>
+      </button>
+      <button class="side-nav__item" data-nav="ia-design">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">IA &amp; Design</span>
+      </button>
+      <button class="side-nav__item" data-nav="discovery">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Discovery</span>
+      </button>
+      <button class="side-nav__item" data-nav="desenvolvimento">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Desenvolvimento</span>
+      </button>
+      <button class="side-nav__item" data-nav="testes">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Testes</span>
+      </button>
+      <button class="side-nav__item" data-nav="handoff">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Handoff</span>
+      </button>
+      <button class="side-nav__item" data-nav="core">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Core</span>
+      </button>
+      <button class="side-nav__item" data-nav="novo-papel">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Novo Papel</span>
+      </button>
+      <button class="side-nav__item" data-nav="fechamento">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Fechamento</span>
+      </button>
+    </div>
   </nav>
 
+  <!-- Slide Counter -->
+  <div class="slide-counter" aria-hidden="true">
+    <span class="slide-counter__current">01</span>
+    <span class="slide-counter__sep"> / </span>
+    <span class="slide-counter__total">20</span>
+  </div>
 
-  <!-- ====== 1. ABERTURA ====== -->
-  <section class="chapter chapter--dark" id="abertura" data-chapter="1">
-    <div class="slide slide--hero">
-      <div class="container">
-        <h1 class="hero" data-animate="split-words">
-          <span class="emoji-hero">💎</span>
-          Quem nunca quis aplicar o Double Diamond como está no livro…
-          <br /><span class="text-gradient">…mas precisou adaptar tudo na prática?</span>
-        </h1>
+  <!-- Keyboard Hint -->
+  <div class="key-hint" aria-hidden="true">
+    <span class="key-hint__key">&uarr;</span>
+    <span class="key-hint__key">&darr;</span>
+    <span>navegar</span>
+  </div>
+
+
+  <!-- ====== SLIDE 1 — Abertura: Pergunta ====== -->
+  <section class="slide" data-chapter="abertura" data-slide="1">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Conexão Humana
+      </span>
+      <h1 class="title" data-animate="words">
+        Quem nunca quis aplicar o Double Diamond como está no livro…
+        <br /><span class="gradient">mas precisou adaptar tudo na prática?</span>
+      </h1>
+    </div>
+  </section>
+
+
+  <!-- ====== SLIDE 2 — Abertura: Problema ====== -->
+  <section class="slide" data-chapter="abertura" data-slide="2">
+    <div class="slide__inner">
+      <h1 class="title" data-animate="words">
+        O problema nunca foi o framework.<br />
+        <span class="gradient">Foi o tempo.</span>
+      </h1>
+    </div>
+  </section>
+
+
+  <!-- ====== SLIDE 3 — Abertura: Dores ====== -->
+  <section class="slide" data-chapter="abertura" data-slide="3">
+    <div class="slide__glow slide__glow--bottom-left"></div>
+    <div class="slide__inner">
+      <div class="glass glass--narrow" data-animate="scale-up">
+        <div class="pain-list" data-stagger>
+          <div class="pain-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>Projetos urgentes</span>
+          </div>
+          <div class="pain-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>Descobertas apressadas</span>
+          </div>
+          <div class="pain-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>Delivery acelerado</span>
+          </div>
+          <div class="pain-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>Decisões sem maturidade</span>
+          </div>
+        </div>
+      </div>
+      <p class="subtitle" data-animate="blur-in">
+        O Double Diamond funciona.<br />
+        <span class="muted">Mas nem sempre cabe na realidade do produto digital.</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ====== SLIDE 4 — A Virada: Double Diamond ====== -->
+  <section class="slide" data-chapter="virada" data-slide="4">
+    <div class="slide__glow slide__glow--top-right"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        A Virada
+      </span>
+      <div class="diamond-visual" data-animate="fade-up">
+        <svg class="diamond-svg" viewBox="0 0 680 280" fill="none">
+          <path class="diamond-path diamond-path--1" d="M 20 140 L 180 30 L 340 140 L 180 250 Z"/>
+          <path class="diamond-path diamond-path--2" d="M 340 140 L 500 30 L 660 140 L 500 250 Z"/>
+          <line class="diamond-divider" x1="340" y1="30" x2="340" y2="250"/>
+        </svg>
+        <div class="diamond-labels" data-stagger>
+          <span>Discover</span>
+          <span>Define</span>
+          <span>Develop</span>
+          <span>Deliver</span>
+        </div>
       </div>
     </div>
   </section>
 
 
-  <!-- ====== 2. PROBLEMA ====== -->
-  <section class="chapter chapter--dark" id="problema" data-chapter="2">
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <p class="statement" data-animate="split-words">
-          O problema nunca foi o framework.<br />
-          <span class="text-gradient">Foi o tempo.</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="slide slide--content">
-      <div class="container slide__centered">
-        <div class="scatter-grid" data-stagger>
-          <div class="scatter-item">
-            <span class="scatter-item__emoji">⚡</span>
-            <span class="scatter-item__text">Projetos urgentes</span>
-          </div>
-          <div class="scatter-item">
-            <span class="scatter-item__emoji">⏳</span>
-            <span class="scatter-item__text">Descobertas apressadas</span>
-          </div>
-          <div class="scatter-item">
-            <span class="scatter-item__emoji">🚀</span>
-            <span class="scatter-item__text">Delivery acelerado</span>
-          </div>
-          <div class="scatter-item">
-            <span class="scatter-item__emoji">🧠</span>
-            <span class="scatter-item__text">Decisões sem maturidade</span>
+  <!-- ====== SLIDE 5 — A Virada: Design é Circular ====== -->
+  <section class="slide" data-chapter="virada" data-slide="5">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">
+        O design real nunca foi linear.<br />
+        <span class="gradient">Ele sempre foi circular.</span>
+      </p>
+      <div class="orbit-container" data-animate="scale-up">
+        <div class="orbit-ring">
+          <span class="orbit-tag" style="--angle: 0deg">Descobrir</span>
+          <span class="orbit-tag" style="--angle: 72deg">Testar</span>
+          <span class="orbit-tag" style="--angle: 144deg">Ajustar</span>
+          <span class="orbit-tag" style="--angle: 216deg">Aprender</span>
+          <span class="orbit-tag" style="--angle: 288deg">Refinar</span>
+        </div>
+        <div class="orbit-center">
+          <div class="orbit-center__ring"></div>
+          <div class="orbit-center__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           </div>
         </div>
       </div>
@@ -121,206 +187,193 @@
   </section>
 
 
-  <!-- ====== 3. O CICLO ====== -->
-  <section class="chapter chapter--dark" id="ciclo" data-chapter="3">
+  <!-- ====== SLIDE 6 — A Virada: Energia ====== -->
+  <section class="slide" data-chapter="virada" data-slide="6">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">
+        Se o design é circular,<br />ele precisa de <span class="gradient">energia constante.</span>
+      </p>
+      <p class="body-text" data-animate="blur-in">
+        O que sempre quebrou o ciclo<br />foram as tarefas operacionais.
+      </p>
+    </div>
+  </section>
 
-    <div class="slide slide--content">
-      <div class="container slide__centered">
-        <span class="badge" data-animate="fade-up">O Ciclo</span>
-        <div class="diamond-visual" data-animate="fade-up">
-          <svg class="diamond-svg" viewBox="0 0 680 280" fill="none">
-            <path class="diamond-path diamond-path--1" d="M 20 140 L 180 30 L 340 140 L 180 250 Z"/>
-            <path class="diamond-path diamond-path--2" d="M 340 140 L 500 30 L 660 140 L 500 250 Z"/>
-            <line class="diamond-divider" x1="340" y1="30" x2="340" y2="250"/>
-          </svg>
-          <div class="diamond-labels" data-stagger>
-            <span>Discover</span>
-            <span>Define</span>
-            <span>Develop</span>
-            <span>Deliver</span>
-          </div>
-        </div>
+
+  <!-- ====== SLIDE 7 — IA & Design: Negações ====== -->
+  <section class="slide" data-chapter="ia-design" data-slide="7">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        IA &amp; Design
+      </span>
+      <div class="negation-list" data-stagger>
+        <p class="negation-item">IA não substitui o designer.</p>
+        <p class="negation-item">IA não cria repertório.</p>
+        <p class="negation-item">IA não decide estratégia.</p>
       </div>
     </div>
+  </section>
 
-    <div class="slide slide--statement">
-      <div class="container">
-        <div class="orbit-container" data-animate="scale-up">
-          <div class="orbit-ring orbit-ring--outer">
-            <svg class="orbit-ring-svg" viewBox="0 0 360 360" fill="none" aria-hidden="true">
-              <circle cx="180" cy="180" r="155" stroke="rgba(155,109,255,0.15)" stroke-width="1" stroke-dasharray="6 10"/>
-            </svg>
-            <span class="orbit-tag" style="--angle: 0deg">Descobrir</span>
-            <span class="orbit-tag" style="--angle: 72deg">Testar</span>
-            <span class="orbit-tag" style="--angle: 144deg">Ajustar</span>
-            <span class="orbit-tag" style="--angle: 216deg">Aprender</span>
-            <span class="orbit-tag" style="--angle: 288deg">Refinar</span>
-          </div>
-          <div class="orbit-center">
-            <div class="orbit-center__ring"></div>
-            <div class="orbit-center__icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+
+  <!-- ====== SLIDE 8 — IA & Design: Fricção + Tempo ====== -->
+  <section class="slide" data-chapter="ia-design" data-slide="8">
+    <div class="slide__inner">
+      <h1 class="title" data-animate="words">
+        <span class="gradient">IA remove fricção.</span>
+      </h1>
+      <p class="subtitle" data-animate="blur-in" style="margin-top: 1rem;">
+        Ela devolve tempo<br />ao <span class="gradient">pensamento estratégico.</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ====== SLIDE 9 — Discovery ====== -->
+  <section class="slide" data-chapter="discovery" data-slide="9">
+    <div class="slide__glow slide__glow--top-right"></div>
+    <div class="slide__inner slide__inner--wide">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Discovery
+      </span>
+      <p class="subtitle" data-animate="words">
+        Onde a IA <span class="gradient">muda o jogo</span>
+      </p>
+
+      <div class="compare-grid" data-animate="scale-up">
+        <!-- Before -->
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label">Antes</span>
+          <div class="pain-list" data-stagger>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Entrevistas longas</span>
+            </div>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Transcrição manual</span>
+            </div>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Miro infinito</span>
+            </div>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Síntese demorada</span>
             </div>
           </div>
         </div>
-        <p class="statement statement--sub orbit-caption" data-animate="split-words">
-          <span class="text-gradient">O design real nunca foi linear.</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <p class="statement" data-animate="split-words">
-          O que sempre quebrou o ciclo?
-        </p>
-      </div>
-    </div>
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <span class="emoji-hero" data-animate="scale-up">🧱</span>
-        <p class="statement" data-animate="split-words">
-          <span class="text-gradient">Tarefas operacionais.</span>
-        </p>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ====== 4. IA & DESIGN ====== -->
-  <section class="chapter chapter--dark" id="ia-design" data-chapter="4">
-
-    <div class="slide slide--content">
-      <div class="container slide__centered">
-        <span class="badge" data-animate="fade-up">IA &amp; Design</span>
-        <div class="negation-list" data-stagger>
-          <p class="negation-item">IA não substitui o designer.</p>
-          <p class="negation-item">IA não cria repertório.</p>
-          <p class="negation-item negation-item--bright">IA não decide estratégia.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <span class="emoji-hero" data-animate="scale-up">✨</span>
-        <p class="statement" data-animate="split-words">
-          <span class="text-gradient">IA remove fricção.</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <p class="statement statement--sub" data-animate="split-words">
-          Ela devolve tempo<br />ao <span class="text-gradient">pensamento estratégico.</span>
-        </p>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Transition -->
-  <div class="blend blend--to-light" aria-hidden="true"></div>
-
-
-  <!-- ====== 5. DISCOVERY ====== -->
-  <section class="chapter chapter--light" id="discovery" data-chapter="5">
-    <div class="container">
-      <div class="chapter__header" data-animate="fade-up">
-        <span class="badge badge--light">Discovery</span>
-        <h2 class="heading">Onde a IA <span class="text-gradient">muda o jogo</span></h2>
-      </div>
-
-      <div class="split-columns" data-animate="fade-up">
-        <!-- ANTES -->
-        <div class="split-col split-col--before">
-          <span class="phase-tag phase-tag--red">Antes</span>
-          <div class="phase-list-minimal" data-stagger>
-            <div class="phase-item-minimal phase-item-minimal--pain">Entrevistas longas</div>
-            <div class="phase-item-minimal phase-item-minimal--pain">Transcrição manual</div>
-            <div class="phase-item-minimal phase-item-minimal--pain">Síntese demorada</div>
-          </div>
-        </div>
-
-        <!-- AGORA COM IA -->
-        <div class="split-col split-col--after">
-          <span class="phase-tag phase-tag--purple">Agora com IA</span>
-          <div class="tool-logos" data-stagger>
-            <div class="tool-logo" style="--brand: #C9A227; --brand-bg: rgba(201,162,39,0.1)">
-              <span class="tool-logo__icon">G</span>
-              <span class="tool-logo__name">Granola</span>
+        <!-- After -->
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label compare-label--accent">Agora com IA</span>
+          <div class="tool-list" data-stagger-scale>
+            <div class="tool-card">
+              <div class="tool-card__logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </div>
+              <div class="tool-card__info">
+                <p class="tool-card__name">Granola</p>
+                <p class="tool-card__desc">Transcrição inteligente de entrevistas</p>
+              </div>
             </div>
-            <div class="tool-logo" style="--brand: #10A37F; --brand-bg: rgba(16,163,127,0.08)">
-              <span class="tool-logo__icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>
-              </span>
-              <span class="tool-logo__name">ChatGPT</span>
+            <div class="tool-card">
+              <div class="tool-card__logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 8v0"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg>
+              </div>
+              <div class="tool-card__info">
+                <p class="tool-card__name">ChatGPT</p>
+                <p class="tool-card__desc">Síntese e hipóteses de pesquisa</p>
+              </div>
             </div>
-            <div class="tool-logo" style="--brand: #4285F4; --brand-bg: rgba(66,133,244,0.08)">
-              <span class="tool-logo__icon">N</span>
-              <span class="tool-logo__name">NotebookLM</span>
+            <div class="tool-card">
+              <div class="tool-card__logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M12 7l1.5 3 3.5.5-2.5 2.5.5 3.5L12 15l-3 1.5.5-3.5L7 10.5l3.5-.5L12 7z"/></svg>
+              </div>
+              <div class="tool-card__info">
+                <p class="tool-card__name">NotebookLM</p>
+                <p class="tool-card__desc">Organização automática de insights</p>
+              </div>
             </div>
           </div>
-          <div class="capability-list" data-stagger>
-            <span class="capability-tag">Transcrição automática</span>
-            <span class="capability-tag">Clusterização</span>
-            <span class="capability-tag">Geração de hipóteses</span>
-            <span class="capability-tag">Síntese rápida</span>
-          </div>
         </div>
       </div>
     </div>
   </section>
 
 
-  <!-- ====== 6. DESENVOLVIMENTO ====== -->
-  <section class="chapter chapter--light" id="desenvolvimento" data-chapter="6">
-    <div class="container">
-      <div class="chapter__header" data-animate="fade-up">
-        <span class="badge badge--light">Desenvolvimento</span>
-        <h2 class="heading">Tangibilizar <span class="text-gradient">mais cedo</span></h2>
-      </div>
+  <!-- ====== SLIDE 10 — Discovery: Frase ====== -->
+  <section class="slide" data-chapter="discovery" data-slide="10">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">
+        O discovery deixa de ser um gargalo<br />
+        <span class="gradient">e vira fluxo contínuo de aprendizado.</span>
+      </p>
+    </div>
+  </section>
 
-      <div class="split-columns" data-animate="fade-up">
-        <!-- ANTES -->
-        <div class="split-col split-col--before">
-          <span class="phase-tag phase-tag--red">Antes</span>
-          <div class="phase-list-minimal" data-stagger>
-            <div class="phase-item-minimal phase-item-minimal--pain">Ideias abstratas</div>
-            <div class="phase-item-minimal phase-item-minimal--pain">Protótipos demorados</div>
-            <div class="phase-item-minimal phase-item-minimal--pain">Sem material concreto</div>
-          </div>
-        </div>
 
-        <!-- AGORA COM IA -->
-        <div class="split-col split-col--after">
-          <span class="phase-tag phase-tag--purple">Agora com IA</span>
-          <div class="tool-logos" data-stagger>
-            <div class="tool-logo" style="--brand: #171717; --brand-bg: rgba(0,0,0,0.05)">
-              <span class="tool-logo__icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 3L6 3C4.34 3 3 4.34 3 6v12c0 1.66 1.34 3 3 3h12c1.66 0 3-1.34 3-3V6c0-1.66-1.34-3-3-3zm-3.5 14h-1.25l-3-5.25V17H9V7h1.25l3 5.25V7H14.5v10z"/></svg>
-              </span>
-              <span class="tool-logo__name">v0</span>
+  <!-- ====== SLIDE 11 — Desenvolvimento ====== -->
+  <section class="slide" data-chapter="desenvolvimento" data-slide="11">
+    <div class="slide__glow slide__glow--bottom-left"></div>
+    <div class="slide__inner slide__inner--wide">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Desenvolvimento
+      </span>
+      <p class="subtitle" data-animate="words">
+        Tangibilizar <span class="gradient">mais cedo</span>
+      </p>
+
+      <div class="compare-grid" data-animate="scale-up">
+        <!-- Before -->
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label">Antes</span>
+          <div class="pain-list" data-stagger>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Ideias abstratas</span>
             </div>
-            <div class="tool-logo" style="--brand: #FF6B6B; --brand-bg: rgba(255,107,107,0.08)">
-              <span class="tool-logo__icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-              </span>
-              <span class="tool-logo__name">Lovable</span>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Protótipos demorados</span>
             </div>
-            <div class="tool-logo" style="--brand: #A259FF; --brand-bg: rgba(162,89,255,0.08)">
-              <span class="tool-logo__icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5zM12 2h3.5a3.5 3.5 0 1 1 0 7H12V2zm0 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0zm-7 0A3.5 3.5 0 0 1 8.5 11H12v3.5a3.5 3.5 0 0 1-7 0zM5 12a3.5 3.5 0 0 1 3.5-3.5H12V16H8.5A3.5 3.5 0 0 1 5 12.5z"/></svg>
-              </span>
-              <span class="tool-logo__name">Figma AI</span>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Discussões sem material concreto</span>
             </div>
           </div>
-          <div class="capability-list" data-stagger>
-            <span class="capability-tag">Prototipação com código</span>
-            <span class="capability-tag">Variações rápidas</span>
-            <span class="capability-tag">Fluxos estruturados</span>
+        </div>
+        <!-- After -->
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label compare-label--accent">Agora com IA</span>
+          <div class="tool-list" data-stagger-scale>
+            <div class="tool-card">
+              <div class="tool-card__logo" style="font-size: 0.85rem; font-weight: 800;">v0</div>
+              <div class="tool-card__info">
+                <p class="tool-card__name">v0</p>
+                <p class="tool-card__desc">Prototipação rápida com código</p>
+              </div>
+            </div>
+            <div class="tool-card">
+              <div class="tool-card__logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <div class="tool-card__info">
+                <p class="tool-card__name">Lovable</p>
+                <p class="tool-card__desc">Validação visual inicial</p>
+              </div>
+            </div>
+            <div class="tool-card">
+              <div class="tool-card__logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+              </div>
+              <div class="tool-card__info">
+                <p class="tool-card__name">Figma AI</p>
+                <p class="tool-card__desc">Geração e variações de layout</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -328,41 +381,67 @@
   </section>
 
 
-  <!-- Transition -->
-  <div class="blend blend--to-dark" aria-hidden="true"></div>
-
-
-  <!-- ====== 7. TESTES & ITERAÇÃO ====== -->
-  <section class="chapter chapter--dark" id="testes" data-chapter="7">
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <span class="badge" data-animate="fade-up">Testes &amp; Iteração</span>
-        <p class="statement" data-animate="split-words">
-          Testar deixa de ser evento.<br />
-          <span class="text-gradient">Vira hábito.</span>
-        </p>
-      </div>
+  <!-- ====== SLIDE 12 — Desenvolvimento: Frase ====== -->
+  <section class="slide" data-chapter="desenvolvimento" data-slide="12">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">
+        A IA ajuda a sair do abstrato<br />
+        <span class="gradient">mais cedo.</span>
+      </p>
     </div>
+  </section>
 
-    <div class="slide slide--content">
-      <div class="container slide__centered">
-        <div class="scatter-grid" data-stagger>
-          <div class="scatter-item">
-            <span class="scatter-item__emoji">🔁</span>
-            <span class="scatter-item__text">Explorar</span>
+
+  <!-- ====== SLIDE 13 — Testes ====== -->
+  <section class="slide" data-chapter="testes" data-slide="13">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner slide__inner--wide">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Testes &amp; Iteração
+      </span>
+      <p class="subtitle" data-animate="words">
+        Testar deixa de ser um evento.<br />
+        <span class="gradient">E vira um hábito.</span>
+      </p>
+
+      <div class="compare-grid" data-animate="scale-up">
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label">Antes</span>
+          <div class="pain-list" data-stagger>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Testes raros</span>
+            </div>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Simulações limitadas</span>
+            </div>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Iterações lentas</span>
+            </div>
           </div>
-          <div class="scatter-item">
-            <span class="scatter-item__emoji">⚡</span>
-            <span class="scatter-item__text">Ajustar</span>
-          </div>
-          <div class="scatter-item">
-            <span class="scatter-item__emoji">🧪</span>
-            <span class="scatter-item__text">Simular</span>
-          </div>
-          <div class="scatter-item">
-            <span class="scatter-item__emoji">📈</span>
-            <span class="scatter-item__text">Evoluir</span>
+        </div>
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label compare-label--accent">Agora</span>
+          <div class="feature-list" data-stagger>
+            <div class="feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Criação rápida de cenários</span>
+            </div>
+            <div class="feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Ajustes frequentes</span>
+            </div>
+            <div class="feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Exploração de alternativas</span>
+            </div>
+            <div class="feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Testes conceituais antes do dev pesado</span>
+            </div>
           </div>
         </div>
       </div>
@@ -370,97 +449,181 @@
   </section>
 
 
-  <!-- ====== 8. ESTRATÉGIA (NEW) ====== -->
-  <section class="chapter chapter--dark" id="estrategia" data-chapter="8">
+  <!-- ====== SLIDE 14 — Handoff ====== -->
+  <section class="slide" data-chapter="handoff" data-slide="14">
+    <div class="slide__inner slide__inner--wide">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Handoff &amp; QA
+      </span>
+      <p class="subtitle" data-animate="words">
+        O delivery não encerra o design.<br />
+        <span class="gradient">Ele alimenta o próximo ciclo.</span>
+      </p>
 
-    <div class="slide slide--statement">
-      <div class="container">
-        <p class="statement" data-animate="split-words">
-          Não é sobre o prompt perfeito.
-        </p>
-      </div>
-    </div>
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <p class="statement statement--sub" data-animate="split-words">
-          É sobre construir<br /><span class="text-gradient">seu próprio sistema.</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="slide slide--content">
-      <div class="container slide__centered">
-        <div class="mantra-list" data-stagger>
-          <p class="mantra-item">Cada designer adapta.</p>
-          <p class="mantra-item">Cada contexto exige.</p>
-          <p class="mantra-item mantra-item--bright">Cada processo evolui.</p>
+      <div class="compare-grid" data-animate="scale-up">
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label">Antes</span>
+          <div class="pain-list" data-stagger>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Handoff como fim do processo</span>
+            </div>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Retrabalho</span>
+            </div>
+            <div class="pain-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Ajustes tardios</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label compare-label--accent">Agora com IA</span>
+          <div class="feature-list" data-stagger>
+            <div class="feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Explorar interações antes da entrega</span>
+            </div>
+            <div class="feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Refinar microinterações</span>
+            </div>
+            <div class="feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>QA visual mais inteligente</span>
+            </div>
+            <div class="feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Ajustes rápidos antes de produção</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
 
-  <!-- ====== 9. NOVO PAPEL ====== -->
-  <section class="chapter chapter--dark" id="novo-papel" data-chapter="9">
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <span class="badge" data-animate="fade-up">Novo Papel</span>
-        <p class="statement" data-animate="split-words">
-          Menos executor.<br />
-          <span class="text-gradient">Mais estrategista.</span>
-        </p>
-      </div>
+  <!-- ====== SLIDE 15 — Core: Statement ====== -->
+  <section class="slide" data-chapter="core" data-slide="15">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        O Core
+      </span>
+      <h1 class="title" data-animate="words">
+        Design não é só<br /><span class="gradient">o que é visto.</span>
+      </h1>
     </div>
+  </section>
 
-    <div class="slide slide--content">
-      <div class="container slide__centered">
-        <div class="quality-list" data-stagger>
-          <p class="quality-item"><span class="quality-emoji">🧠</span> Mais leitura de contexto</p>
-          <p class="quality-item"><span class="quality-emoji">🎯</span> Mais decisão consciente</p>
-          <p class="quality-item quality-item--bright"><span class="quality-emoji">📊</span> Mais <span class="text-gradient">impacto real</span></p>
+
+  <!-- ====== SLIDE 16 — Core: Pilares ====== -->
+  <section class="slide" data-chapter="core" data-slide="16">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="fade-up">Ele precisa ser:</p>
+      <div class="pillar-grid" data-stagger>
+        <div class="pillar-card">
+          <div class="pillar-card__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3 class="pillar-card__title">Significativo</h3>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><polyline points="9 11 12 14 22 4"/></svg>
+          </div>
+          <h3 class="pillar-card__title">Funcional</h3>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-card__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <h3 class="pillar-card__title">Viável</h3>
         </div>
       </div>
     </div>
   </section>
 
 
-  <!-- ====== 10. FECHAMENTO ====== -->
-  <section class="chapter chapter--dark" id="fechamento" data-chapter="10">
-
-    <div class="slide slide--statement">
-      <div class="container">
-        <span class="badge" data-animate="fade-up">Fechamento</span>
-        <p class="statement" data-animate="split-words">
-          IA cuida do operacional.<br />
-          <span class="text-gradient">Designer cuida do impacto.</span>
-        </p>
-      </div>
+  <!-- ====== SLIDE 17 — Core: Projetar + IA operacional ====== -->
+  <section class="slide" data-chapter="core" data-slide="17">
+    <div class="slide__inner">
+      <h1 class="title" data-animate="words">
+        <span class="gradient">Projetar</span> é diferente<br />de desenhar.
+      </h1>
+      <p class="body-text" data-animate="blur-in" style="margin-top: 1.5rem;">
+        Quando a IA assume o operacional,<br />
+        o designer consegue proteger<br />
+        <span class="accent">o que realmente sustenta o design.</span>
+      </p>
     </div>
+  </section>
 
-    <div class="slide slide--statement">
-      <div class="container">
-        <div class="personal" data-animate="blur-in">
-          <p class="personal__note">
-            Inclusive… essa apresentação só foi possível nesse formato
-            porque usei IA para acelerar o processo.
-          </p>
-          <p class="personal__highlight">
-            O tempo que economizei produzindo…<br />
-            <span class="text-gradient">usei pensando no que realmente importava dizer aqui hoje.</span>
-          </p>
-        </div>
+
+  <!-- ====== SLIDE 18 — Novo Papel ====== -->
+  <section class="slide" data-chapter="novo-papel" data-slide="18">
+    <div class="slide__glow slide__glow--top-right"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Novo Papel
+      </span>
+      <h1 class="title" data-animate="words">
+        Menos executor.<br />
+        <span class="gradient">Mais estrategista.</span>
+      </h1>
+      <div class="quality-list" data-stagger style="margin-top: 1rem;">
+        <p class="quality-item">Mais leitura de contexto.</p>
+        <p class="quality-item">Mais decisão consciente.</p>
+        <p class="quality-item">Mais <span class="gradient">impacto real.</span></p>
       </div>
     </div>
   </section>
 
 
-  <footer class="footer">
-    <div class="container">
-      <p class="footer__text">IA &amp; Design — Apresentação por Karem Carvalho</p>
+  <!-- ====== SLIDE 19 — Fechamento: Impacto ====== -->
+  <section class="slide" data-chapter="fechamento" data-slide="19">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Fechamento
+      </span>
+      <h1 class="title" data-animate="words">
+        IA cuida do operacional.<br />
+        <span class="gradient">Designer cuida do impacto.</span>
+      </h1>
     </div>
-  </footer>
+  </section>
+
+
+  <!-- ====== SLIDE 20 — Fechamento: Reflexão + Nota ====== -->
+  <section class="slide" data-chapter="fechamento" data-slide="20">
+    <div class="slide__glow slide__glow--bottom-left"></div>
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">
+        Quanto menos tempo executando tarefas repetitivas,<br />
+        mais espaço para fazer<br />
+        <span class="gradient">design de verdade.</span>
+      </p>
+      <div class="glass glass--narrow" data-animate="blur-in" style="margin-top: 1rem;">
+        <p class="personal-note">
+          Inclusive… essa apresentação só foi possível nesse formato
+          porque eu usei IA para estruturar e acelerar o processo.
+        </p>
+        <p class="personal-highlight">
+          O tempo que eu economizei produzindo…<br />
+          <span class="gradient">eu usei pensando no que realmente importava dizer aqui hoje.</span>
+        </p>
+      </div>
+      <p class="footer-text" data-animate="fade-up" style="margin-top: 2rem;">
+        IA &amp; Design — Apresentação por Karem Carvalho
+      </p>
+    </div>
+  </section>
 
   <script src="script.js"></script>
 </body>

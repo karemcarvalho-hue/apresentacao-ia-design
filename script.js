@@ -1,544 +1,423 @@
 /**
- * IA & Design — O Novo Ciclo do Processo Criativo
- * Immersive scroll experience: particles, parallax,
- * dynamic gradients, fluid micro-interactions
- * Inspired by Reflect.app
+ * IA & Design — Presentation Deck
+ * Scroll-snap driven animations & navigation
  */
 (function () {
   'use strict';
 
-  /* -------------------------------------------------------
-     PARTICLE SYSTEM
-     Lightweight canvas-based particles that drift gently
-     and respond subtly to scroll position.
-     ------------------------------------------------------- */
-  function initParticleSystem() {
-    var canvas = document.getElementById('particle-canvas');
-    if (!canvas) { return; }
-    var ctx = canvas.getContext('2d');
-    var particles = [];
-    var scrollY = 0;
-    var animFrame = 0;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    // Particle count based on screen size (performance-conscious)
-    function getParticleCount() {
-      var area = window.innerWidth * window.innerHeight;
-      if (area < 500000) { return 50; }
-      if (area < 1200000) { return 80; }
-      return 120;
-    }
-
-    function resize() {
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function createParticle() {
-      var size = Math.random() * 3 + 1;
-      return {
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: size,
-        baseSize: size,
-        speedX: (Math.random() - 0.5) * 0.4,
-        speedY: (Math.random() - 0.5) * 0.25 - 0.1,
-        opacity: Math.random() * 0.5 + 0.2,
-        baseOpacity: Math.random() * 0.5 + 0.2,
-        pulse: Math.random() * Math.PI * 2,
-        pulseSpeed: Math.random() * 0.015 + 0.005,
-        // Depth layer: 0 = far (slower), 1 = near (faster)
-        depth: Math.random()
-      };
-    }
-
-    function initParticles() {
-      particles = [];
-      var count = getParticleCount();
-      for (var i = 0; i < count; i++) {
-        particles.push(createParticle());
-      }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-      var w = window.innerWidth;
-      var h = window.innerHeight;
-
-      for (var i = 0; i < particles.length; i++) {
-        var p = particles[i];
-
-        // Pulse size and opacity
-        p.pulse += p.pulseSpeed;
-        var pulseFactor = Math.sin(p.pulse) * 0.3 + 0.7;
-        p.size = p.baseSize * pulseFactor;
-        p.opacity = p.baseOpacity * (0.6 + pulseFactor * 0.4);
-
-        // Movement: drift + subtle scroll influence
-        var scrollInfluence = (scrollY * 0.02) * (1 - p.depth);
-        p.x += p.speedX;
-        p.y += p.speedY - scrollInfluence * 0.01;
-
-        // Wrap around screen edges softly
-        if (p.x < -10) { p.x = w + 10; }
-        if (p.x > w + 10) { p.x = -10; }
-        if (p.y < -10) { p.y = h + 10; }
-        if (p.y > h + 10) { p.y = -10; }
-
-        // Draw particle with glow for larger ones
-        var r = Math.round(155 + (100 * p.depth));
-        var g = Math.round(109 + (146 * p.depth));
-        var b = 255;
-
-        // Add soft glow for particles larger than 2px
-        if (p.size > 2) {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + (p.opacity * 0.15) + ')';
-          ctx.fill();
-        }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + p.opacity + ')';
-        ctx.fill();
-      }
-
-      animFrame = requestAnimationFrame(draw);
-    }
-
-    // Track scroll for particle response
-    window.addEventListener('scroll', function () {
-      scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    }, { passive: true });
-
-    window.addEventListener('resize', function () {
-      resize();
-      initParticles();
-    });
-
-    resize();
-    initParticles();
-    draw();
-
-    // Return cleanup function
-    return function () {
-      cancelAnimationFrame(animFrame);
-    };
-  }
-
+  /* Total slide count (used for reference) */
 
   /* -------------------------------------------------------
-     DYNAMIC GRADIENT — orbs respond to scroll position
-     Subtle color and position shifts as user scrolls
-     ------------------------------------------------------- */
-  function initDynamicGradient() {
-    var orbs = document.querySelectorAll('.gradient-orb');
-    if (!orbs.length) { return; }
-
-    var ticking = false;
-
-    function updateGradient() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      var progress = docHeight > 0 ? scrollTop / docHeight : 0;
-
-      // Shift orb positions subtly based on scroll
-      for (var i = 0; i < orbs.length; i++) {
-        var orb = orbs[i];
-        var speed = (i + 1) * 0.05;
-        var yShift = scrollTop * speed * -0.15;
-        var xShift = Math.sin(progress * Math.PI * 2 + i) * 30;
-
-        orb.style.transform =
-          'translate(' + xShift.toFixed(1) + 'px, ' + yShift.toFixed(1) + 'px) ' +
-          'scale(' + (1 + Math.sin(progress * Math.PI + i * 0.5) * 0.08).toFixed(3) + ')';
-      }
-
-      // Adjust opacity based on which section type is visible
-      var lightSections = document.querySelectorAll('.chapter--light');
-      var isInLight = false;
-      for (var j = 0; j < lightSections.length; j++) {
-        var rect = lightSections[j].getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5) {
-          isInLight = true;
-          break;
-        }
-      }
-
-      // Reduce orb intensity during light sections but keep them visible
-      var targetOpacity = isInLight ? 0.4 : 1;
-      for (var k = 0; k < orbs.length; k++) {
-        orbs[k].style.opacity = targetOpacity;
-      }
-
-      ticking = false;
-    }
-
-    window.addEventListener('scroll', function () {
-      if (!ticking) {
-        requestAnimationFrame(updateGradient);
-        ticking = true;
-      }
-    }, { passive: true });
-
-    updateGradient();
-  }
-
-
-  /* -------------------------------------------------------
-     PARALLAX SCROLL
-     Elements with data-parallax get subtle Y translation
-     based on their scroll position relative to viewport
-     ------------------------------------------------------- */
-  function initParallax() {
-    var elements = document.querySelectorAll('[data-parallax]');
-    if (!elements.length) { return; }
-
-    var ticking = false;
-
-    function update() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      var winH = window.innerHeight;
-
-      for (var i = 0; i < elements.length; i++) {
-        var el = elements[i];
-        var speed = parseFloat(el.getAttribute('data-parallax')) || 0.1;
-        var rect = el.getBoundingClientRect();
-        var center = rect.top + rect.height / 2;
-
-        // Only apply parallax when element is near viewport
-        if (center > -winH && center < winH * 2) {
-          // How far from viewport center (normalized -1 to 1)
-          var offset = (center - winH / 2) / winH;
-          var yShift = offset * speed * -80;
-
-          el.style.transform = 'translateY(' + yShift.toFixed(1) + 'px)';
-        }
-      }
-
-      ticking = false;
-    }
-
-    window.addEventListener('scroll', function () {
-      if (!ticking) {
-        requestAnimationFrame(update);
-        ticking = true;
-      }
-    }, { passive: true });
-
-    update();
-  }
-
-
-  /* -------------------------------------------------------
-     SPLIT TEXT
+     1. SPLIT TEXT ENGINE
+     Wraps each word in <span class="word"> for per-word
+     reveal animation. Preserves <br> and inner spans.
      ------------------------------------------------------- */
   function initSplitText() {
-    var elements = document.querySelectorAll('[data-animate="split-words"]');
+    var elements = document.querySelectorAll('[data-animate="words"]');
     elements.forEach(function (el) {
-      splitWords(el, 0);
+      splitWordsInNode(el);
     });
   }
 
-  function splitWords(parent, startIdx) {
-    var nodes = Array.prototype.slice.call(parent.childNodes);
-    var frag = document.createDocumentFragment();
-    var idx = startIdx;
+  function splitWordsInNode(parentEl) {
+    var childNodes = Array.prototype.slice.call(parentEl.childNodes);
+    var fragment = document.createDocumentFragment();
+    var wordIndex = 0;
 
-    nodes.forEach(function (node) {
+    childNodes.forEach(function (node) {
       if (node.nodeType === Node.TEXT_NODE) {
-        node.textContent.split(/(\s+)/).forEach(function (part) {
+        var words = node.textContent.split(/(\s+)/);
+        words.forEach(function (part) {
           if (/^\s+$/.test(part)) {
-            if (part.indexOf('\n') === -1) {
-              var sp = document.createElement('span');
-              sp.className = 'word-space';
-              sp.textContent = ' ';
-              frag.appendChild(sp);
-            }
+            if (part.indexOf('\n') !== -1) return;
+            var sp = document.createElement('span');
+            sp.className = 'word-space';
+            sp.textContent = ' ';
+            fragment.appendChild(sp);
           } else if (part.length > 0) {
             var w = document.createElement('span');
             w.className = 'word';
             w.textContent = part;
-            w.style.transitionDelay = (idx * 45) + 'ms';
-            idx++;
-            frag.appendChild(w);
+            w.style.transitionDelay = (wordIndex * 40) + 'ms';
+            wordIndex++;
+            fragment.appendChild(w);
           }
         });
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         if (node.tagName === 'BR') {
-          frag.appendChild(node.cloneNode());
+          fragment.appendChild(node.cloneNode());
         } else {
           var clone = node.cloneNode(false);
-          idx = recurse(node, clone, idx);
-          frag.appendChild(clone);
-        }
-      }
-    });
-
-    parent.textContent = '';
-    parent.appendChild(frag);
-    return idx;
-  }
-
-  function recurse(src, target, idx) {
-    Array.prototype.slice.call(src.childNodes).forEach(function (child) {
-      if (child.nodeType === Node.TEXT_NODE) {
-        child.textContent.split(/(\s+)/).forEach(function (part) {
-          if (/^\s+$/.test(part)) {
-            if (part.indexOf('\n') === -1) {
-              var sp = document.createElement('span');
-              sp.className = 'word-space';
-              sp.textContent = ' ';
-              target.appendChild(sp);
+          var innerNodes = Array.prototype.slice.call(node.childNodes);
+          innerNodes.forEach(function (inner) {
+            if (inner.nodeType === Node.TEXT_NODE) {
+              var iw = inner.textContent.split(/(\s+)/);
+              iw.forEach(function (part) {
+                if (/^\s+$/.test(part)) {
+                  if (part.indexOf('\n') !== -1) return;
+                  var sp = document.createElement('span');
+                  sp.className = 'word-space';
+                  sp.textContent = ' ';
+                  clone.appendChild(sp);
+                } else if (part.length > 0) {
+                  var ws = document.createElement('span');
+                  ws.className = 'word';
+                  ws.textContent = part;
+                  ws.style.transitionDelay = (wordIndex * 40) + 'ms';
+                  wordIndex++;
+                  clone.appendChild(ws);
+                }
+              });
+            } else {
+              clone.appendChild(inner.cloneNode(true));
             }
-          } else if (part.length > 0) {
-            var w = document.createElement('span');
-            w.className = 'word';
-            w.textContent = part;
-            w.style.transitionDelay = (idx * 45) + 'ms';
-            idx++;
-            target.appendChild(w);
-          }
-        });
-      } else if (child.nodeType === Node.ELEMENT_NODE) {
-        if (child.tagName === 'BR') {
-          target.appendChild(child.cloneNode());
-        } else {
-          var c = child.cloneNode(false);
-          idx = recurse(child, c, idx);
-          target.appendChild(c);
+          });
+          fragment.appendChild(clone);
         }
       }
     });
-    return idx;
+
+    parentEl.textContent = '';
+    parentEl.appendChild(fragment);
   }
 
 
   /* -------------------------------------------------------
-     SCROLL PROGRESS
+     2. SCROLL PROGRESS BAR
      ------------------------------------------------------- */
   function initScrollProgress() {
-    var fill = document.querySelector('.scroll-progress__fill');
-    if (!fill) { return; }
+    var fill = document.querySelector('.progress__fill');
+    if (!fill) return;
+
     var ticking = false;
 
     function update() {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      fill.style.width = (docHeight > 0 ? Math.min(scrollTop / docHeight * 100, 100) : 0) + '%';
+      var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      fill.style.width = Math.min(pct, 100) + '%';
       ticking = false;
     }
 
     window.addEventListener('scroll', function () {
-      if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
     }, { passive: true });
+
     update();
   }
 
 
   /* -------------------------------------------------------
-     SCROLL ANIMATIONS (Intersection Observer)
-     Enhanced with more organic reveal timing
+     3. INTERSECTION OBSERVER FOR ANIMATIONS
+     Triggers .visible / .split-visible on elements
+     with data-animate, data-stagger, data-stagger-scale.
      ------------------------------------------------------- */
   function initScrollAnimations() {
-    var els = document.querySelectorAll('[data-animate], [data-stagger]');
+    var targets = document.querySelectorAll(
+      '[data-animate], [data-stagger], [data-stagger-scale]'
+    );
 
-    // Batch observer with staggered delay for nearby elements
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           var el = entry.target;
-          var animType = el.getAttribute('data-animate');
-
-          // Small delay based on element position within viewport
-          // Creates a natural cascade effect
-          var rect = el.getBoundingClientRect();
-          var viewportOffset = rect.top / window.innerHeight;
-          var delay = Math.max(0, viewportOffset * 100);
-
-          setTimeout(function () {
-            if (animType === 'split-words') {
-              el.classList.add('split-visible');
-            } else {
-              el.classList.add('visible');
-            }
-          }, delay);
-
+          if (el.getAttribute('data-animate') === 'words') {
+            el.classList.add('split-visible');
+          } else {
+            el.classList.add('visible');
+          }
           observer.unobserve(el);
         }
       });
-    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+    }, {
+      root: null,
+      rootMargin: '0px 0px -60px 0px',
+      threshold: 0.12
+    });
 
-    els.forEach(function (el) { observer.observe(el); });
+    targets.forEach(function (el) {
+      observer.observe(el);
+    });
   }
 
 
   /* -------------------------------------------------------
-     CHAPTER NAV
+     4. SIDE NAVIGATION
+     - Shows/hides based on scroll position
+     - Tracks active chapter based on visible slides
+     - Click to scroll to chapter's first slide
      ------------------------------------------------------- */
-  function initChapterNav() {
-    var nav = document.querySelector('.chapter-nav');
-    var dots = document.querySelectorAll('.chapter-dot');
-    var chapters = document.querySelectorAll('[data-chapter]');
-    if (!nav || !dots.length || !chapters.length) { return; }
+  function initSideNav() {
+    var nav = document.querySelector('.side-nav');
+    var items = document.querySelectorAll('.side-nav__item');
+    var slides = document.querySelectorAll('.slide');
+    var counter = document.querySelector('.slide-counter');
+    var currentEl = document.querySelector('.slide-counter__current');
+    var keyHint = document.querySelector('.key-hint');
+
+    if (!nav || items.length === 0) return;
 
     var shown = false;
-    function checkVis() {
-      var show = window.pageYOffset > window.innerHeight * 0.3;
-      if (show !== shown) {
-        nav.classList.toggle('chapter-nav--visible', show);
-        shown = show;
+
+    function checkVisibility() {
+      var scrollY = window.pageYOffset;
+      if (scrollY > window.innerHeight * 0.25) {
+        if (!shown) {
+          nav.classList.add('side-nav--visible');
+          if (counter) counter.classList.add('slide-counter--visible');
+          if (keyHint) keyHint.classList.add('key-hint--visible');
+          shown = true;
+        }
+      } else {
+        if (shown) {
+          nav.classList.remove('side-nav--visible');
+          if (counter) counter.classList.remove('slide-counter--visible');
+          if (keyHint) keyHint.classList.remove('key-hint--visible');
+          shown = false;
+        }
       }
     }
-    window.addEventListener('scroll', checkVis, { passive: true });
-    checkVis();
 
-    dots.forEach(function (d) {
-      d.addEventListener('click', function () {
-        var t = document.getElementById(d.getAttribute('data-target'));
-        if (t) { t.scrollIntoView({ behavior: 'smooth' }); }
+    window.addEventListener('scroll', checkVisibility, { passive: true });
+    checkVisibility();
+
+    // Click navigation
+    items.forEach(function (item) {
+      item.addEventListener('click', function () {
+        var target = item.getAttribute('data-nav');
+        var firstSlide = document.querySelector('[data-chapter="' + target + '"]');
+        if (firstSlide) {
+          firstSlide.scrollIntoView({ behavior: 'smooth' });
+        }
       });
     });
 
-    chapters.forEach(function (ch) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            var id = entry.target.id;
-            var light = entry.target.classList.contains('chapter--light');
-            nav.classList.toggle('chapter-nav--on-light', light);
-            dots.forEach(function (d) {
-              d.classList.toggle('chapter-dot--active', d.getAttribute('data-target') === id);
-            });
+    // Track active chapter on scroll
+    var slideObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var chapter = entry.target.getAttribute('data-chapter');
+          var slideNum = entry.target.getAttribute('data-slide');
+
+          // Update nav active state
+          items.forEach(function (item) {
+            if (item.getAttribute('data-nav') === chapter) {
+              item.classList.add('side-nav__item--active');
+            } else {
+              item.classList.remove('side-nav__item--active');
+            }
+          });
+
+          // Update counter
+          if (currentEl && slideNum) {
+            currentEl.textContent = slideNum.padStart(2, '0');
           }
-        });
-      }, { rootMargin: '-30% 0px -30% 0px', threshold: 0 }).observe(ch);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '-40% 0px -40% 0px',
+      threshold: 0
+    });
+
+    slides.forEach(function (slide) {
+      slideObserver.observe(slide);
     });
   }
 
 
   /* -------------------------------------------------------
-     KEYBOARD NAV
+     5. KEYBOARD NAVIGATION
+     Arrow Up/Down navigate between slides.
      ------------------------------------------------------- */
   function initKeyboardNav() {
-    var slides = document.querySelectorAll('.slide--statement, .slide--content, .slide--hero');
-    if (!slides.length) { return; }
+    var slides = document.querySelectorAll('.slide');
+    if (slides.length === 0) return;
 
-    function current() {
-      var y = window.pageYOffset + window.innerHeight / 2;
+    function getCurrentSlideIndex() {
+      var scrollY = window.pageYOffset + window.innerHeight / 2;
       for (var i = slides.length - 1; i >= 0; i--) {
-        if (slides[i].offsetTop <= y) { return i; }
+        if (slides[i].offsetTop <= scrollY) return i;
       }
       return 0;
     }
 
     document.addEventListener('keydown', function (e) {
-      var idx;
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
         e.preventDefault();
-        idx = Math.min(current() + 1, slides.length - 1);
-        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        var next = Math.min(getCurrentSlideIndex() + 1, slides.length - 1);
+        slides[next].scrollIntoView({ behavior: 'smooth' });
       } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
         e.preventDefault();
-        idx = Math.max(current() - 1, 0);
-        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        var prev = Math.max(getCurrentSlideIndex() - 1, 0);
+        slides[prev].scrollIntoView({ behavior: 'smooth' });
       }
     });
   }
 
 
   /* -------------------------------------------------------
-     DIAMOND DRAW
+     6. DOUBLE DIAMOND SVG DRAW
      ------------------------------------------------------- */
   function initDiamondDraw() {
-    var vis = document.querySelector('.diamond-visual');
-    if (!vis) { return; }
-    var paths = vis.querySelectorAll('.diamond-path');
-    paths.forEach(function (p) {
-      var len = p.getTotalLength();
-      p.style.strokeDasharray = len;
-      p.style.strokeDashoffset = len;
+    var visual = document.querySelector('.diamond-visual');
+    if (!visual) return;
+
+    var paths = visual.querySelectorAll('.diamond-path');
+
+    paths.forEach(function (path) {
+      var length = path.getTotalLength();
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length;
     });
 
-    var obs = new IntersectionObserver(function (entries) {
+    var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          paths.forEach(function (p, i) {
-            p.style.transition = 'stroke-dashoffset ' + (1.4 + i * 0.3) + 's cubic-bezier(0.16,1,0.3,1) ' + (i * 0.25) + 's';
-            p.style.strokeDashoffset = '0';
+          paths.forEach(function (path, idx) {
+            var length = path.getTotalLength();
+            path.style.transition = 'stroke-dashoffset ' +
+              (1.4 + idx * 0.3) + 's cubic-bezier(0.16, 1, 0.3, 1) ' +
+              (idx * 0.25) + 's';
+            path.style.strokeDashoffset = '0';
           });
-          obs.unobserve(vis);
+          observer.unobserve(visual);
         }
       });
     }, { threshold: 0.3 });
-    obs.observe(vis);
+
+    observer.observe(visual);
   }
 
 
   /* -------------------------------------------------------
-     ORBIT SEQUENCE
+     7. ORBIT SEQUENTIAL ACTIVATION
      ------------------------------------------------------- */
   function initOrbitSequence() {
     var container = document.querySelector('.orbit-container');
-    if (!container) { return; }
+    if (!container) return;
+
     var tags = container.querySelectorAll('.orbit-tag');
 
-    var obs = new IntersectionObserver(function (entries) {
+    var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          tags.forEach(function (tag, i) {
-            setTimeout(function () { tag.classList.add('orbit-tag--active'); }, 250 + i * 180);
+          tags.forEach(function (tag, idx) {
+            setTimeout(function () {
+              tag.classList.add('orbit-tag--active');
+            }, 300 + idx * 180);
           });
-          obs.unobserve(container);
+          observer.unobserve(container);
         }
       });
     }, { threshold: 0.3 });
-    obs.observe(container);
+
+    observer.observe(container);
   }
 
 
   /* -------------------------------------------------------
-     SMOOTH SECTION COLOR TRANSITIONS
-     Fade background subtly between dark/light sections
-     by adjusting the immersive-bg opacity
+     8. GLOW PARALLAX
+     Subtle movement of glow blobs based on scroll.
      ------------------------------------------------------- */
-  function initSectionColorTransitions() {
-    var immersiveBg = document.querySelector('.immersive-bg');
-    if (!immersiveBg) { return; }
+  function initGlowParallax() {
+    var glows = document.querySelectorAll('.slide__glow');
+    if (glows.length === 0) return;
+
     var ticking = false;
 
-    function update() {
-      var lightSections = document.querySelectorAll('.chapter--light');
-      var isInLight = false;
-
-      for (var i = 0; i < lightSections.length; i++) {
-        var rect = lightSections[i].getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.4) {
-          isInLight = true;
-          break;
-        }
-      }
-
-      // Reduce background layer during light sections, keep it partially visible
-      immersiveBg.style.opacity = isInLight ? '0.35' : '1';
-      immersiveBg.style.transition = 'opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-      ticking = false;
-    }
-
-    window.addEventListener('scroll', function () {
+    function onScroll() {
       if (!ticking) {
-        requestAnimationFrame(update);
+        window.requestAnimationFrame(function () {
+          var scrollY = window.pageYOffset;
+
+          glows.forEach(function (glow) {
+            var slide = glow.closest('.slide');
+            if (!slide) return;
+
+            var slideTop = slide.offsetTop;
+            var slideHeight = slide.offsetHeight;
+            var relative = scrollY - slideTop;
+
+            if (relative > -window.innerHeight && relative < slideHeight) {
+              var progress = relative / slideHeight;
+              var isCenter = glow.classList.contains('slide__glow--center');
+              var offset = isCenter ? progress * 30 : progress * 50;
+              var baseTransform = isCenter ? 'translate(-50%, -50%)' : '';
+
+              if (isCenter) {
+                glow.style.transform = 'translate(-50%, calc(-50% + ' + offset + 'px))';
+              } else {
+                glow.style.transform = 'translateY(' + offset + 'px)';
+              }
+            }
+          });
+
+          ticking = false;
+        });
         ticking = true;
       }
-    }, { passive: true });
+    }
 
-    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+
+  /* -------------------------------------------------------
+     9. CARD TILT EFFECT
+     ------------------------------------------------------- */
+  function initCardTilt() {
+    var cards = document.querySelectorAll('.tool-card, .pillar-card');
+
+    cards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform =
+          'perspective(600px) rotateX(' + (y * -3) + 'deg) rotateY(' + (x * 3) + 'deg) translateY(-2px)';
+      });
+
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1.36, 0.42, 0.99)';
+        setTimeout(function () {
+          card.style.transition = '';
+        }, 500);
+      });
+    });
+  }
+
+
+  /* -------------------------------------------------------
+     10. HIDE KEYBOARD HINT AFTER FIRST INTERACTION
+     ------------------------------------------------------- */
+  function initKeyHintAutoHide() {
+    var hint = document.querySelector('.key-hint');
+    if (!hint) return;
+
+    var hidden = false;
+
+    function hide() {
+      if (!hidden) {
+        hidden = true;
+        setTimeout(function () {
+          hint.style.opacity = '0';
+          hint.style.transition = 'opacity 0.5s ease';
+        }, 3000);
+      }
+    }
+
+    document.addEventListener('keydown', hide, { once: true });
+
+    var scrollCount = 0;
+    window.addEventListener('scroll', function () {
+      scrollCount++;
+      if (scrollCount > 3) hide();
+    }, { passive: true });
   }
 
 
@@ -546,32 +425,38 @@
      INIT
      ------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', function () {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.querySelectorAll('[data-animate], [data-stagger]').forEach(function (el) {
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      // Show everything immediately
+      document.querySelectorAll('[data-animate], [data-stagger], [data-stagger-scale]').forEach(function (el) {
         el.classList.add('visible');
-        if (el.getAttribute('data-animate') === 'split-words') { el.classList.add('split-visible'); }
+        if (el.getAttribute('data-animate') === 'words') {
+          el.classList.add('split-visible');
+        }
       });
-      document.querySelectorAll('.orbit-tag').forEach(function (t) { t.classList.add('orbit-tag--active'); });
-      document.querySelectorAll('.diamond-path').forEach(function (p) { p.style.strokeDashoffset = '0'; });
+      document.querySelectorAll('.orbit-tag').forEach(function (t) {
+        t.classList.add('orbit-tag--active');
+      });
+      document.querySelectorAll('.diamond-path').forEach(function (p) {
+        p.style.strokeDashoffset = '0';
+      });
+      // Navigation still works
       initScrollProgress();
-      initChapterNav();
+      initSideNav();
       initKeyboardNav();
       return;
     }
 
-    // Core systems
     initSplitText();
     initScrollProgress();
     initScrollAnimations();
-    initChapterNav();
+    initSideNav();
     initKeyboardNav();
     initDiamondDraw();
     initOrbitSequence();
-
-    // Immersive enhancements
-    initParticleSystem();
-    initDynamicGradient();
-    initParallax();
-    initSectionColorTransitions();
+    initGlowParallax();
+    initCardTilt();
+    initKeyHintAutoHide();
   });
 })();
