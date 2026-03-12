@@ -2805,3 +2805,54 @@ a { text-decoration: none; color: inherit; }
     transform: translate(0, 0);
   }
 }
+
+
+/* ── Language Toggle ── */
+.lang-toggle {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 100;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.lang-toggle__btn {
+  padding: 0.3rem 0.65rem;
+  border: none;
+  border-radius: 2rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: inherit;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 0.25s, background 0.25s;
+}
+
+.lang-toggle__btn:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.lang-toggle__btn--active {
+  background: rgba(0, 102, 255, 0.2);
+  color: var(--blue-300, #6cb4ff);
+  border: 1px solid rgba(0, 150, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .lang-toggle {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+  .lang-toggle__btn {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.5rem;
+  }
+}

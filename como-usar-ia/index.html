@@ -27,11 +27,11 @@
     <div class="side-nav__track">
       <button class="side-nav__item side-nav__item--active" data-nav="abertura">
         <span class="side-nav__dot"></span>
-        <span class="side-nav__label">Abertura</span>
+        <span class="side-nav__label" data-i18n="nav-abertura">Abertura</span>
       </button>
       <button class="side-nav__item" data-nav="processo">
         <span class="side-nav__dot"></span>
-        <span class="side-nav__label">Processo</span>
+        <span class="side-nav__label" data-i18n="nav-processo">Processo</span>
       </button>
       <button class="side-nav__item" data-nav="ia-design">
         <span class="side-nav__dot"></span>
@@ -43,7 +43,7 @@
       </button>
       <button class="side-nav__item" data-nav="testes">
         <span class="side-nav__dot"></span>
-        <span class="side-nav__label">Testes &amp; Iteração</span>
+        <span class="side-nav__label" data-i18n="nav-testes">Testes &amp; Iteração</span>
       </button>
       <button class="side-nav__item" data-nav="delivery">
         <span class="side-nav__dot"></span>
@@ -55,11 +55,11 @@
       </button>
       <button class="side-nav__item" data-nav="novo-papel">
         <span class="side-nav__dot"></span>
-        <span class="side-nav__label">Novo Papel</span>
+        <span class="side-nav__label" data-i18n="nav-novo-papel">Novo Papel</span>
       </button>
       <button class="side-nav__item" data-nav="fechamento">
         <span class="side-nav__dot"></span>
-        <span class="side-nav__label">Fechamento</span>
+        <span class="side-nav__label" data-i18n="nav-fechamento">Fechamento</span>
       </button>
     </div>
   </nav>
@@ -70,10 +70,15 @@
     <span class="slide-counter__total">26</span>
   </div>
 
+  <div class="lang-toggle" aria-label="Idioma">
+    <button class="lang-toggle__btn lang-toggle__btn--active" data-lang="pt">PT-BR</button>
+    <button class="lang-toggle__btn" data-lang="es">ES-AR</button>
+  </div>
+
   <div class="key-hint" aria-hidden="true">
     <span class="key-hint__key">&larr;</span>
     <span class="key-hint__key">&rarr;</span>
-    <span>navegar</span>
+    <span data-i18n="nav-hint">navegar</span>
   </div>
 
   <button class="nav-arrow nav-arrow--prev" aria-label="Slide anterior">
@@ -250,7 +255,7 @@
         <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=v0.dev&sz=64" alt="" />v0</span>
         <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=64" alt="" />ElevenLabs</span>
         <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=lovable.dev&sz=64" alt="" />Lovable</span>
-        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=miro.com&sz=64" alt="" />Miro AI</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=mural.co&sz=64" alt="" />Mural</span>
         <span class="logo-pill logo-pill--lg"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=cursor.com&sz=64" alt="" />Cursor</span>
         <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=framer.com&sz=64" alt="" />Framer AI</span>
         <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=notion.so&sz=64" alt="" />Notion AI</span>
@@ -325,7 +330,7 @@
           <div class="pain-list" data-stagger>
             <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Entrevistas longas</span></div>
             <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Transcrição manual</span></div>
-            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Miro infinito</span></div>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span data-i18n="s9-pain3">Mural infinitos</span></div>
             <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Síntese demorada</span></div>
           </div>
         </div>

@@ -849,4 +849,271 @@
     });
   }
 
+
+  /* ================================================================
+     i18n — PT-BR / ES-AR language toggle
+     ================================================================ */
+  (function initI18n() {
+    var currentLang = 'pt';
+    var ptCache = {};
+
+    var rules = [
+      // [slideNum, selectorWithinSlide, index, esHTML]
+      // --- Side nav & UI (handled separately) ---
+
+      // --- SLIDE 1 — Cover ---
+      [1, '.badge', 0, '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> En la Práctica'],
+      [1, '.title', 0, 'Cómo usar IA en el<br /><span class="gradient">proceso de Design</span>'],
+      [1, '.body-text', 0, 'Ejemplos reales, herramientas para usar en el día a día<br />y cómo la IA se integra en cada etapa del proceso.'],
+
+      // --- SLIDE 2 — Combinado ---
+      [2, '.subtitle', 0, 'Antes de empezar,<br />un <span class="gradient">acuerdo.</span>'],
+      [2, '.body-text', 0, 'Vamos a hacer pausas a lo largo de la presentación para poner manos a la obra.'],
+      [2, '.combinado-card__title', 0, 'Pausa'],
+      [2, '.combinado-card__desc', 0, 'Voy a pausar en puntos clave para que practiquen.'],
+      [2, '.combinado-card__title', 1, 'Salas en grupo'],
+      [2, '.combinado-card__desc', 1, 'El equipo se divide en salas para compartir aprendizajes entre sí.'],
+      [2, '.combinado-card__title', 2, 'Compartir'],
+      [2, '.combinado-card__desc', 2, 'Cada grupo trae al menos 1 ejemplo para compartir con todos.'],
+
+      // --- SLIDE 3 — Design é Circular ---
+      [3, '.badge', 0, '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Proceso'],
+      [3, '.subtitle', 0, 'El diseño real nunca fue lineal.<br /><span class="gradient">Siempre fue circular.</span>'],
+      [3, '.orbit-tag', 0, 'Descubrir'],
+      [3, '.orbit-tag', 1, 'Testear'],
+      [3, '.orbit-tag', 2, 'Ajustar'],
+      [3, '.orbit-tag', 3, 'Aprender'],
+      [3, '.orbit-tag', 4, 'Refinar'],
+
+      // --- SLIDE 4 — Energia ---
+      [4, '.subtitle', 0, 'Si el diseño es circular,<br />necesita <span class="gradient">energía constante.</span>'],
+      [4, '.body-text', 0, 'Lo que siempre rompió el ciclo<br />fueron las tareas operacionales.'],
+
+      // --- SLIDE 5 — Ponte ---
+      [5, '.subtitle', 0, 'Entonces viene la IA y promete resolver<br /><span class="gradient">todo lo operacional.</span>'],
+      [5, '.body-text', 0, '¡Vamos a buscar las herramientas!'],
+
+      // --- SLIDE 6 — Ansiedade ---
+      [6, '.title', 0, 'Estamos viviendo una<br /><span class="gradient">ansiedad de herramientas.</span>'],
+      [6, '.body-text', 0, 'Cada semana nace una nueva.<br />Cada semana alguien publica <span class="accent">"esta va a reemplazar a los diseñadores"</span>.'],
+      [6, '.anxiety-step', 0, 'Y probamos.'],
+      [6, '.anxiety-step', 1, 'Y descargamos.'],
+      [6, '.anxiety-step', 2, 'Y creamos cuenta.'],
+      [6, '.anxiety-step', 3, 'Y abandonamos.'],
+
+      // --- SLIDE 7 — Logo Cloud ---
+      [7, '.subtitle', 0, 'Pero es imposible <span class="gradient">usar todo.</span>'],
+      [7, '.body-text', 0, 'Tenemos que entender qué tiene sentido<br /><span class="accent">en cada proceso.</span>'],
+
+      // --- SLIDE 8 — Transição ---
+      [8, '.subtitle', 0, 'Necesitamos entender qué herramientas de IA<br /><span class="gradient">tienen sentido en nuestro proceso.</span>'],
+      [8, '.body-text', 0, 'Son muchas. Probar, elegir, experimentar.<br />Y es acá donde la <span class="accent">IA cambia el juego.</span>'],
+      [8, '.cycle-step', 1, '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Pruebas &amp; Iteración'],
+
+      // --- SLIDE 9 — Discovery compare ---
+      [9, '.subtitle', 0, 'Donde la IA <span class="gradient">cambia el juego</span>'],
+      [9, '.compare-label', 0, 'Antes'],
+      [9, '.pain-item span', 0, 'Entrevistas largas'],
+      [9, '.pain-item span', 1, 'Transcripción manual'],
+      [9, '.pain-item span', 2, 'Murales infinitos'],
+      [9, '.pain-item span', 3, 'Síntesis demorada'],
+      [9, '.compare-label', 1, 'Ahora con IA'],
+      [9, '.tool-card__desc', 0, 'Transcripción inteligente de entrevistas'],
+      [9, '.tool-card__desc', 1, 'Síntesis e hipótesis de investigación'],
+      [9, '.tool-card__desc', 2, 'Organización automática de insights'],
+      [9, '.tool-card__badge', 1, 'Ideación'],
+      [9, '.tool-card__badge', 2, 'Estructuración'],
+
+      // --- SLIDE 10 — Exemplo Prático Discovery ---
+      [10, '.title', 0, 'Ejemplo <span class="gradient">Práctico</span>'],
+      [10, '.body-text', 0, 'Cómo apliqué IA en este escenario — contenido en vivo'],
+      [10, '.demo-card__title', 0, 'Panel de Chat'],
+      [10, '.demo-card__desc', 0, 'Entrevistas con merchants e insights de investigación'],
+      [10, '.demo-card__title', 1, 'Análisis Cualitativo'],
+      [10, '.demo-card__desc', 1, '3.902 conversaciones reales analizadas con IA'],
+      [10, '.demo-card__desc', 2, 'Roadmap visual Q1–Q2 2026 basado en datos'],
+
+      // --- SLIDE 11 — Trigger Discovery ---
+      [11, '.trigger-card__title', 0, '¿Y ustedes?<br /><span class="gradient">¿Dónde la IA entra en su discovery?</span>'],
+      [11, '.trigger-card__sub', 0, 'Herramientas, procesos, experimentos… ¡Compartan!'],
+
+      // --- SLIDE 12 — Discovery Frase + Pilar 1 ---
+      [12, '.subtitle', 0, 'El discovery deja de ser un cuello de botella<br /><span class="gradient">y se convierte en flujo continuo de aprendizaje.</span>'],
+      [12, '.body-text', 0, 'Y potencia nuestro pilar:'],
+      [12, '.pilar-card__title', 0, '<span class="gradient">Entender problemas</span>'],
+      [12, '.pilar-card__desc', 0, 'Cada vez que decidimos atacar un problema, tenemos que entenderlo perfectamente. Nuestra solución será tan buena como el entendimiento que tengamos del problema.'],
+
+      // --- SLIDE 13 — Testes compare ---
+      [13, '.badge', 0, '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Pruebas &amp; Iteración'],
+      [13, '.subtitle', 0, 'Testear deja de ser un evento.<br /><span class="gradient">Y se convierte en un hábito.</span>'],
+      [13, '.pain-item span', 0, 'Pruebas escasas'],
+      [13, '.pain-item span', 1, 'Simulaciones limitadas'],
+      [13, '.pain-item span', 2, 'Iteraciones lentas'],
+      [13, '.compare-label', 1, 'Ahora'],
+      [13, '.feature-item span', 0, 'Creación rápida de escenarios'],
+      [13, '.feature-item span', 1, 'Ajustes frecuentes'],
+      [13, '.feature-item span', 2, 'Exploración de alternativas'],
+      [13, '.feature-item span', 3, 'Pruebas conceptuales antes del dev pesado'],
+
+      // --- SLIDE 14 — Exemplo Prático Testes ---
+      [14, '.badge', 0, 'Pruebas &amp; Iteración'],
+      [14, '.title', 0, 'Ejemplo <span class="gradient">Práctico</span>'],
+      [14, '.body-text', 0, 'Cómo apliqué IA en este escenario — contenido en vivo'],
+      [14, '.demo-card__desc', 0, 'POC Statistics — conversaciones reales con merchants'],
+      [14, '.demo-card__desc', 1, 'Métricas y datos visuales de Lumi'],
+
+      // --- SLIDE 15 — Pausa Testes ---
+      [15, '.trigger-card__title', 0, '¿Y ustedes?<br /><span class="gradient">¿Cómo testean e iteran con IA?</span>'],
+      [15, '.trigger-card__sub', 0, 'Prototipos, validaciones, experimentos… ¡Compartan!'],
+
+      // --- SLIDE 16 — Frase + Pilar 2 ---
+      [16, '.subtitle', 0, 'La IA ayuda a salir de lo abstracto<br /><span class="gradient">más temprano.</span>'],
+      [16, '.body-text', 0, 'Y potencia nuestro pilar:'],
+      [16, '.pilar-card__title', 0, '<span class="gradient">Encantar con soluciones</span>'],
+      [16, '.pilar-card__desc', 0, 'Una vez que tenemos el problema muy claro, tenemos que entender y testear todas las posibles soluciones para el mismo problema y profundizar en una que encante a las personas.'],
+
+      // --- SLIDE 17 — Delivery compare ---
+      [17, '.subtitle', 0, 'El delivery no cierra el diseño.<br /><span class="gradient">Alimenta el próximo ciclo.</span>'],
+      [17, '.pain-item span', 0, 'Handoff como fin del proceso'],
+      [17, '.pain-item span', 1, 'Retrabajo'],
+      [17, '.pain-item span', 2, 'Ajustes tardíos'],
+      [17, '.compare-label', 1, 'Ahora con IA'],
+      [17, '.feature-item span', 0, 'Explorar interacciones antes de la entrega'],
+      [17, '.feature-item span', 1, 'Refinar microinteracciones'],
+      [17, '.feature-item span', 2, 'QA visual más inteligente'],
+      [17, '.feature-item span', 3, 'Ajustes rápidos antes de producción'],
+
+      // --- SLIDE 18 — Handoff cards ---
+      [18, '.subtitle', 0, 'Documento de <span class="gradient">handoff</span>'],
+      [18, '.handoff-card h3', 0, 'Specs detalladas'],
+      [18, '.handoff-card p', 0, 'IA genera specs de componentes, estados, edge cases'],
+      [18, '.handoff-card h3', 1, 'Prototipo navegable'],
+      [18, '.handoff-card p', 1, 'Deploy real para que el equipo sienta el producto antes del dev'],
+      [18, '.handoff-card h3', 2, 'Contexto de decisión'],
+      [18, '.handoff-card p', 2, 'Documenta los porqués, no solo los qués'],
+
+      // --- SLIDE 19 — Exemplo Prático Delivery ---
+      [19, '.title', 0, 'Ejemplo <span class="gradient">Práctico</span>'],
+      [19, '.body-text', 0, 'Cómo apliqué IA en este escenario — contenido en vivo'],
+      [19, '.demo-card__desc', 0, 'Especificación visual de la card de pedidos'],
+      [19, '.demo-card__desc', 1, 'Artefacto de decisión para el Design System'],
+      [19, '.demo-card__desc', 2, 'Estandarización de acciones masivas'],
+
+      // --- SLIDE 20 — Trigger Delivery ---
+      [20, '.trigger-card__title', 0, '¿Cómo es el <span class="gradient">delivery en su equipo?</span>'],
+      [20, '.trigger-card__sub', 0, '¿Qué funciona? ¿Qué genera retrabajo? Intercambiemos.'],
+
+      // --- SLIDE 21 — Pilar 3 ---
+      [21, '.subtitle', 0, 'El delivery no cierra el diseño.<br /><span class="gradient">Alimenta el próximo ciclo.</span>'],
+      [21, '.body-text', 0, 'Y potencia nuestro pilar:'],
+      [21, '.pilar-card__title', 0, '<span class="gradient">Agregar valor rápidamente</span>'],
+      [21, '.pilar-card__desc', 0, 'Una vez que diseñamos una solución que encanta, tenemos que lanzar esa solución lo más rápido posible.'],
+
+      // --- SLIDE 22 — Não é sobre ferramentas ---
+      [22, '.badge', 0, '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> El Core'],
+      [22, '.subtitle', 0, 'Pero no se trata de<br /><span class="gradient">las herramientas.</span>'],
+      [22, '.core-denial-card span', 0, 'El prompt perfecto'],
+      [22, '.core-denial-card span', 1, 'La herramienta de moda'],
+      [22, '.core-denial-card span', 2, 'Automatizar todo'],
+      [22, '.body-text', 0, 'Si fuera así, <span class="accent">bastaría copiar y pegar.</span>'],
+
+      // --- SLIDE 23 — O que importa ---
+      [23, '.subtitle', 0, 'Lo que realmente<br /><span class="gradient">importa.</span>'],
+      [23, '.core-action-card span', 0, 'Entender problemas'],
+      [23, '.core-action-card span', 1, 'Encantar con soluciones'],
+      [23, '.core-action-card span', 2, 'Agregar valor rápidamente'],
+      [23, '.body-text', 0, 'La IA no crea método.<br /><span class="accent" style="font-weight: 600;">Lo amplifica.</span>'],
+
+      // --- SLIDE 24 — Cada designer ---
+      [24, '.subtitle', 0, 'Cada diseñador<br /><span class="gradient">construye el suyo.</span>'],
+      [24, '.duality-card__label', 0, 'No existe'],
+      [24, '.duality-card__item', 0, 'Flujo universal'],
+      [24, '.duality-card__item', 1, 'Stack perfecto'],
+      [24, '.duality-card__item', 2, 'Prompt ideal'],
+      [24, '.duality-card__label', 1, 'Existe'],
+      [24, '.duality-card__item', 3, 'Contexto'],
+      [24, '.duality-card__item', 4, 'Repertorio'],
+      [24, '.duality-card__item', 5, 'Madurez'],
+
+      // --- SLIDE 25 — Menos executor ---
+      [25, '.badge', 0, '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Nuevo Rol'],
+      [25, '.subtitle', 0, 'Menos ejecutor.<br /><span class="gradient">Más estratega.</span>'],
+      [25, '.role-card__title', 0, 'Lectura de contexto'],
+      [25, '.role-card__desc', 0, 'Ver más allá del briefing'],
+      [25, '.role-card__title', 1, 'Decisión consciente'],
+      [25, '.role-card__desc', 1, 'Elegir con criterio, no con apuro'],
+      [25, '.role-card__title', 2, '<span class="gradient">Impacto real</span>'],
+      [25, '.role-card__desc', 2, 'Diseño que cambia resultados'],
+
+      // --- SLIDE 26 — Fechamento ---
+      [26, '.badge', 0, '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Cierre'],
+      [26, '.title', 0, 'La IA cuida lo operacional.<br /><span class="gradient">El diseñador cuida el impacto.</span>'],
+      [26, '.body-text', 0, 'Cuanto menos tiempo ejecutando tareas repetitivas,<br />más espacio para hacer <span class="gradient">diseño de verdad.</span>'],
+      [26, '.footer-text', 0, 'Cómo Usar IA en el Proceso de Design — Karem Carvalho']
+    ];
+
+    var dataI18nRules = {
+      'nav-abertura': 'Apertura',
+      'nav-processo': 'Proceso',
+      'nav-testes': 'Pruebas &amp; Iteración',
+      'nav-novo-papel': 'Nuevo Rol',
+      'nav-fechamento': 'Cierre',
+      'nav-hint': 'navegar',
+      's9-pain3': 'Murales infinitos'
+    };
+
+    var dataI18nPtCache = {};
+
+    function cacheAndApply(lang) {
+      rules.forEach(function(r) {
+        var slideNum = r[0], sel = r[1], idx = r[2], esHTML = r[3];
+        var slide = document.querySelector('[data-slide="' + slideNum + '"]');
+        if (!slide) return;
+        var els = slide.querySelectorAll(sel);
+        var el = els[idx];
+        if (!el) return;
+
+        var cacheKey = slideNum + '|' + sel + '|' + idx;
+        if (!ptCache[cacheKey]) {
+          ptCache[cacheKey] = el.innerHTML;
+        }
+
+        if (lang === 'es') {
+          el.innerHTML = esHTML;
+        } else {
+          el.innerHTML = ptCache[cacheKey];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (!dataI18nPtCache[key]) {
+          dataI18nPtCache[key] = el.innerHTML;
+        }
+        if (lang === 'es' && dataI18nRules[key]) {
+          el.innerHTML = dataI18nRules[key];
+        } else if (lang === 'pt' && dataI18nPtCache[key]) {
+          el.innerHTML = dataI18nPtCache[key];
+        }
+      });
+
+      document.documentElement.lang = lang === 'es' ? 'es-AR' : 'pt-BR';
+      document.title = lang === 'es'
+        ? 'Cómo Usar IA en el Proceso de Design — En la Práctica'
+        : 'Como Usar IA no Processo de Design — Na Prática';
+    }
+
+    var btns = document.querySelectorAll('.lang-toggle__btn');
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var lang = btn.getAttribute('data-lang');
+        if (lang === currentLang) return;
+        currentLang = lang;
+        btns.forEach(function(b) { b.classList.remove('lang-toggle__btn--active'); });
+        btn.classList.add('lang-toggle__btn--active');
+        cacheAndApply(lang);
+      });
+    });
+  })();
+
 })();
