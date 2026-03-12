@@ -1,19 +1,15 @@
 /**
- * IA & Design — Presentation Deck
+ * Como Usar IA no Processo de Design — Na Prática
  * Horizontal slide navigation with premium transitions
- * Includes star particle system for cosmic atmosphere
+ * Blue cosmic star particle system
  */
 (function () {
   'use strict';
 
-  /* -------------------------------------------------------
-     STATE
-     ------------------------------------------------------- */
   var currentIndex = 0;
   var isTransitioning = false;
   var totalSlides = 0;
 
-  /* DOM references (set in init) */
   var track = null;
   var slides = [];
   var navItems = [];
@@ -27,9 +23,7 @@
 
 
   /* -------------------------------------------------------
-     STAR PARTICLE SYSTEM
-     Subtle floating dots simulating a deep star field.
-     Very slow vertical drift, low opacity.
+     STAR PARTICLE SYSTEM (blue tint)
      ------------------------------------------------------- */
   function initStarCanvas() {
     var canvas = document.getElementById('starsCanvas');
@@ -38,7 +32,6 @@
     var ctx = canvas.getContext('2d');
     var particles = [];
     var particleCount = 120;
-    var animFrameId = null;
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -67,16 +60,13 @@
       for (var i = 0; i < particles.length; i++) {
         var p = particles[i];
 
-        /* Very slow upward drift */
         p.y -= p.speed;
         p.x += p.drift;
 
-        /* Subtle twinkle */
         var twinkle = Math.sin(timestamp * p.twinkleSpeed + p.twinklePhase);
         var currentOpacity = p.opacity + twinkle * 0.08;
         if (currentOpacity < 0.05) currentOpacity = 0.05;
 
-        /* Wrap around */
         if (p.y < -5) {
           p.y = canvas.height + 5;
           p.x = Math.random() * canvas.width;
@@ -84,19 +74,18 @@
         if (p.x < -5) p.x = canvas.width + 5;
         if (p.x > canvas.width + 5) p.x = -5;
 
-        /* Draw the star */
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(200, 190, 255, ' + currentOpacity + ')';
+        ctx.fillStyle = 'rgba(180, 210, 255, ' + currentOpacity + ')';
         ctx.fill();
       }
 
-      animFrameId = requestAnimationFrame(draw);
+      requestAnimationFrame(draw);
     }
 
     resize();
     createParticles();
-    animFrameId = requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
 
     window.addEventListener('resize', function () {
       resize();
@@ -106,9 +95,7 @@
 
 
   /* -------------------------------------------------------
-     1. SPLIT TEXT ENGINE
-     Wraps each word in <span class="word"> for per-word
-     reveal animation. Preserves <br> and inner spans.
+     SPLIT TEXT ENGINE
      ------------------------------------------------------- */
   function initSplitText() {
     var elements = document.querySelectorAll('[data-animate="words"]');
@@ -187,8 +174,7 @@
 
 
   /* -------------------------------------------------------
-     2. CORE NAVIGATION — goToSlide
-     Premium horizontal transition with content fade
+     CORE NAVIGATION
      ------------------------------------------------------- */
   function goToSlide(index) {
     if (isTransitioning) return;
@@ -196,43 +182,32 @@
     if (index === currentIndex) return;
 
     var prevIndex = currentIndex;
-    var direction = index > prevIndex ? 1 : -1;
     isTransitioning = true;
     currentIndex = index;
 
-    /* Reset animations on the previous slide */
     resetSlideAnimations(prevIndex);
 
-    /* Move the track */
     track.style.transform = 'translateX(-' + (currentIndex * 100) + 'vw)';
 
-    /* Update UI immediately */
     updateProgress();
     updateCounter();
     updateNavActive();
     updateArrows();
 
-    /* Trigger animations on the new slide after the track transition */
     setTimeout(function () {
       activateSlideAnimations(currentIndex);
       isTransitioning = false;
     }, 720);
 
-    /* Parallax glow on previous slide direction */
     applyGlowParallax(prevIndex, currentIndex);
   }
 
-  function goNext() {
-    goToSlide(currentIndex + 1);
-  }
-
-  function goPrev() {
-    goToSlide(currentIndex - 1);
-  }
+  function goNext() { goToSlide(currentIndex + 1); }
+  function goPrev() { goToSlide(currentIndex - 1); }
 
 
   /* -------------------------------------------------------
-     3. PROGRESS BAR
+     PROGRESS BAR
      ------------------------------------------------------- */
   function updateProgress() {
     if (!progressFill) return;
@@ -242,7 +217,7 @@
 
 
   /* -------------------------------------------------------
-     4. SLIDE COUNTER
+     SLIDE COUNTER
      ------------------------------------------------------- */
   function updateCounter() {
     if (!counterCurrent) return;
@@ -251,7 +226,7 @@
 
 
   /* -------------------------------------------------------
-     5. SIDE NAV — active state
+     SIDE NAV
      ------------------------------------------------------- */
   function updateNavActive() {
     if (navItems.length === 0) return;
@@ -268,7 +243,7 @@
 
 
   /* -------------------------------------------------------
-     6. ARROW VISIBILITY
+     ARROW VISIBILITY
      ------------------------------------------------------- */
   function updateArrows() {
     if (!prevArrow || !nextArrow) return;
@@ -288,14 +263,12 @@
 
 
   /* -------------------------------------------------------
-     7. SLIDE ANIMATIONS
-     Activates data-animate, data-stagger, etc. for a slide.
+     SLIDE ANIMATIONS
      ------------------------------------------------------- */
   function activateSlideAnimations(index) {
     var slide = slides[index];
     if (!slide) return;
 
-    /* Activate VFX layer */
     slide.classList.add('vfx-active');
 
     var targets = slide.querySelectorAll(
@@ -310,7 +283,17 @@
       }
     });
 
-    /* Diamond draw */
+    var orbitContainer = slide.querySelector('.orbit-container');
+    if (orbitContainer) {
+      var tags = orbitContainer.querySelectorAll('.orbit-tag');
+      tags.forEach(function (tag, idx) {
+        setTimeout(function () {
+          tag.classList.add('orbit-tag--active');
+        }, 350 + idx * 200);
+      });
+    }
+
+    /* Diamond paths (if any) */
     var diamondVisual = slide.querySelector('.diamond-visual');
     if (diamondVisual) {
       var paths = diamondVisual.querySelectorAll('.diamond-path');
@@ -321,29 +304,13 @@
         path.style.strokeDashoffset = '0';
       });
     }
-
-    /* Orbit sequence */
-    var orbitContainer = slide.querySelector('.orbit-container');
-    if (orbitContainer) {
-      var tags = orbitContainer.querySelectorAll('.orbit-tag');
-      tags.forEach(function (tag, idx) {
-        setTimeout(function () {
-          tag.classList.add('orbit-tag--active');
-        }, 350 + idx * 200);
-      });
-    }
   }
 
 
-  /* -------------------------------------------------------
-     7b. RESET SLIDE ANIMATIONS
-     Removes visible classes so re-entry animates again.
-     ------------------------------------------------------- */
   function resetSlideAnimations(index) {
     var slide = slides[index];
     if (!slide) return;
 
-    /* Deactivate VFX layer */
     slide.classList.remove('vfx-active');
 
     var targets = slide.querySelectorAll(
@@ -355,7 +322,6 @@
       el.classList.remove('split-visible');
     });
 
-    /* Reset orbit tags */
     var orbitTags = slide.querySelectorAll('.orbit-tag');
     orbitTags.forEach(function (tag) {
       tag.classList.remove('orbit-tag--active');
@@ -369,20 +335,19 @@
       path.style.strokeDashoffset = String(length);
     });
 
-    /* Reset neural network lines (re-hide for next visit) */
+    /* Reset neural network lines */
     var neuralLines = slide.querySelectorAll('.vfx-neural line');
     neuralLines.forEach(function (line) {
       var dash = line.style.getPropertyValue('--vfx-dash');
       if (dash) {
         line.style.transition = 'none';
         line.style.strokeDashoffset = dash;
-        /* Force reflow for next activation */
         void line.offsetWidth;
         line.style.transition = '';
       }
     });
 
-    /* Reset block connection lines */
+    /* Reset connected block lines */
     var blockLines = slide.querySelectorAll('.vfx-blocks line');
     blockLines.forEach(function (line) {
       var bl = line.style.getPropertyValue('--vfx-bl');
@@ -397,14 +362,11 @@
 
 
   /* -------------------------------------------------------
-     8. GLOW PARALLAX
-     Subtle horizontal parallax of glow blobs based on
-     slide transition direction.
+     GLOW PARALLAX
      ------------------------------------------------------- */
   function applyGlowParallax(fromIdx, toIdx) {
     var direction = toIdx > fromIdx ? -1 : 1;
 
-    /* Apply parallax offset to the target slide's glows */
     var targetSlide = slides[toIdx];
     if (!targetSlide) return;
 
@@ -413,7 +375,6 @@
       var isCenter = glow.classList.contains('slide__glow--center');
       var offset = direction * 50;
 
-      /* Start offset */
       if (isCenter) {
         glow.style.transition = 'none';
         glow.style.transform = 'translate(calc(-50% + ' + offset + 'px), -50%)';
@@ -422,7 +383,6 @@
         glow.style.transform = 'translateX(' + offset + 'px)';
       }
 
-      /* Animate back to origin */
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           glow.style.transition = 'transform 1000ms cubic-bezier(0.16, 1, 0.3, 1)';
@@ -438,26 +398,10 @@
 
 
   /* -------------------------------------------------------
-     9. DIAMOND SVG — init dasharray
-     ------------------------------------------------------- */
-  function initDiamondDraw() {
-    var visual = document.querySelector('.diamond-visual');
-    if (!visual) return;
-
-    var paths = visual.querySelectorAll('.diamond-path');
-    paths.forEach(function (path) {
-      var length = path.getTotalLength();
-      path.style.strokeDasharray = String(length);
-      path.style.strokeDashoffset = String(length);
-    });
-  }
-
-
-  /* -------------------------------------------------------
-     10. CARD TILT EFFECT
+     CARD TILT EFFECT
      ------------------------------------------------------- */
   function initCardTilt() {
-    var cards = document.querySelectorAll('.tool-card, .pillar-card');
+    var cards = document.querySelectorAll('.process-step, .handoff-card, .quality-card, .tool-card, .duality-card, .role-card');
 
     cards.forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
@@ -480,7 +424,7 @@
 
 
   /* -------------------------------------------------------
-     11. KEYBOARD NAVIGATION
+     KEYBOARD NAVIGATION
      ------------------------------------------------------- */
   function initKeyboardNav() {
     var hintHidden = false;
@@ -500,7 +444,6 @@
         goToSlide(totalSlides - 1);
       }
 
-      /* Hide hint after first key press */
       if (!hintHidden && keyHint) {
         hintHidden = true;
         setTimeout(function () {
@@ -513,13 +456,12 @@
 
 
   /* -------------------------------------------------------
-     12. SIDE NAV CLICK
+     SIDE NAV CLICK
      ------------------------------------------------------- */
   function initSideNavClick() {
     navItems.forEach(function (item) {
       item.addEventListener('click', function () {
         var target = item.getAttribute('data-nav');
-        /* Find first slide with this chapter */
         for (var i = 0; i < slides.length; i++) {
           if (slides[i].getAttribute('data-chapter') === target) {
             goToSlide(i);
@@ -532,20 +474,16 @@
 
 
   /* -------------------------------------------------------
-     13. ARROW BUTTON CLICKS
+     ARROW BUTTON CLICKS
      ------------------------------------------------------- */
   function initArrowNav() {
-    if (prevArrow) {
-      prevArrow.addEventListener('click', goPrev);
-    }
-    if (nextArrow) {
-      nextArrow.addEventListener('click', goNext);
-    }
+    if (prevArrow) prevArrow.addEventListener('click', goPrev);
+    if (nextArrow) nextArrow.addEventListener('click', goNext);
   }
 
 
   /* -------------------------------------------------------
-     14. TOUCH / SWIPE SUPPORT
+     TOUCH / SWIPE SUPPORT
      ------------------------------------------------------- */
   function initTouchNav() {
     var startX = 0;
@@ -561,7 +499,6 @@
       var dx = e.changedTouches[0].clientX - startX;
       var dy = e.changedTouches[0].clientY - startY;
 
-      /* Only horizontal swipes (ignore vertical) */
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
         if (dx < 0) {
           goNext();
@@ -574,8 +511,7 @@
 
 
   /* -------------------------------------------------------
-     15. SHOW UI ELEMENTS
-     Side nav is excluded — it only appears on screen tap/click.
+     SHOW UI
      ------------------------------------------------------- */
   function showUI() {
     if (slideCounter) slideCounter.classList.add('slide-counter--visible');
@@ -586,16 +522,13 @@
 
 
   /* -------------------------------------------------------
-     15b. SIDE NAV TOGGLE ON CLICK
-     Shows on click/tap anywhere on the screen body,
-     auto-hides after 3.5 seconds of inactivity.
-     Clicking the nav itself keeps it open (resets timer).
+     SIDE NAV TOGGLE
      ------------------------------------------------------- */
   function initSideNavToggle() {
     if (!sideNav) return;
 
     var hideTimer = null;
-    var NAV_TIMEOUT = 3500; /* ms */
+    var NAV_TIMEOUT = 3500;
 
     function showNav() {
       sideNav.classList.add('side-nav--visible');
@@ -608,20 +541,16 @@
       clearTimeout(hideTimer);
     }
 
-    /* Click/tap on screen toggles the nav */
     document.addEventListener('click', function (e) {
-      /* If clicking inside the nav, keep it open (reset timer) */
       if (sideNav.contains(e.target)) {
         clearTimeout(hideTimer);
         hideTimer = setTimeout(hideNav, NAV_TIMEOUT);
         return;
       }
 
-      /* If clicking nav arrows, ignore (don't toggle) */
       if (prevArrow && prevArrow.contains(e.target)) return;
       if (nextArrow && nextArrow.contains(e.target)) return;
 
-      /* Toggle */
       if (sideNav.classList.contains('side-nav--visible')) {
         hideNav();
       } else {
@@ -629,7 +558,6 @@
       }
     });
 
-    /* Also hide nav when navigating via keyboard */
     document.addEventListener('keydown', function () {
       if (sideNav.classList.contains('side-nav--visible')) {
         clearTimeout(hideTimer);
@@ -640,12 +568,11 @@
 
 
   /* -------------------------------------------------------
-     16. MOUSE WHEEL NAVIGATION (throttled)
+     MOUSE WHEEL NAVIGATION
      ------------------------------------------------------- */
   function initWheelNav() {
-    var wheelTimeout = null;
     var lastWheelTime = 0;
-    var wheelCooldown = 900; /* ms between allowed wheel navigations */
+    var wheelCooldown = 900;
 
     document.addEventListener('wheel', function (e) {
       var now = Date.now();
@@ -675,102 +602,130 @@
 
 
   /* -------------------------------------------------------
-     17. VISUAL LAYERS — Atmospheric decorative elements
-     Creates and injects SVG/div layers into specific slides.
-     Activated via .vfx-active class on parent slide.
+     INIT
+     ------------------------------------------------------- */
+  document.addEventListener('DOMContentLoaded', function () {
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    track = document.querySelector('.slides-track');
+    slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    navItems = Array.prototype.slice.call(document.querySelectorAll('.side-nav__item'));
+    progressFill = document.querySelector('.progress__fill');
+    counterCurrent = document.querySelector('.slide-counter__current');
+    prevArrow = document.querySelector('.nav-arrow--prev');
+    nextArrow = document.querySelector('.nav-arrow--next');
+    keyHint = document.querySelector('.key-hint');
+    sideNav = document.querySelector('.side-nav');
+    slideCounter = document.querySelector('.slide-counter');
+    totalSlides = slides.length;
+
+    var totalEl = document.querySelector('.slide-counter__total');
+    if (totalEl) {
+      totalEl.textContent = String(totalSlides).padStart(2, '0');
+    }
+
+    if (!prefersReducedMotion) {
+      initStarCanvas();
+    }
+
+    if (prefersReducedMotion) {
+      slides.forEach(function (slide) {
+        slide.querySelectorAll('[data-animate], [data-stagger], [data-stagger-scale]').forEach(function (el) {
+          el.classList.add('visible');
+          if (el.getAttribute('data-animate') === 'words') {
+            el.classList.add('split-visible');
+          }
+        });
+        slide.querySelectorAll('.orbit-tag').forEach(function (t) {
+          t.classList.add('orbit-tag--active');
+        });
+      });
+      showUI();
+      updateArrows();
+      initKeyboardNav();
+      initSideNavClick();
+      initArrowNav();
+      initTouchNav();
+      initWheelNav();
+      initSideNavToggle();
+      return;
+    }
+
+    initSplitText();
+    initCardTilt();
+    initVisualLayers();
+
+    setTimeout(function () {
+      showUI();
+      updateArrows();
+    }, 400);
+
+    setTimeout(function () {
+      activateSlideAnimations(0);
+    }, 250);
+
+    updateProgress();
+    updateCounter();
+    updateNavActive();
+
+    initKeyboardNav();
+    initSideNavClick();
+    initArrowNav();
+    initTouchNav();
+    initWheelNav();
+    initSideNavToggle();
+  });
+
+
+  /* -------------------------------------------------------
+     VISUAL LAYERS — Floating logo cluster on tool slides
      ------------------------------------------------------- */
   function initVisualLayers() {
     var svgNS = 'http://www.w3.org/2000/svg';
 
-    /* Helper: create an SVG element */
     function svgEl(tag, attrs) {
       var el = document.createElementNS(svgNS, tag);
       if (attrs) {
         for (var k in attrs) {
-          if (attrs.hasOwnProperty(k)) {
-            el.setAttribute(k, attrs[k]);
-          }
+          if (attrs.hasOwnProperty(k)) el.setAttribute(k, attrs[k]);
         }
       }
       return el;
     }
 
-    /* Helper: find slide by data-slide number */
     function getSlide(num) {
       return document.querySelector('.slide[data-slide="' + num + '"]');
     }
 
 
-    /* ==== 1. SLIDE 1 — Neural Network ==== */
+    /* ==== 1. SLIDE 1 — (Cover: clean, no VFX overlay) ==== */
+
+
+    /* ==== 2. SLIDE 3 — Rotating Orbit Circle (Energia was slide 6, now 4) ==== */
     (function () {
-      var slide = getSlide(1);
+      var slide = getSlide(4);
       if (!slide) return;
 
       var wrapper = document.createElement('div');
-      wrapper.className = 'vfx-neural';
+      wrapper.className = 'vfx-orbit-circle';
       wrapper.setAttribute('aria-hidden', 'true');
 
-      var svg = svgEl('svg', { viewBox: '0 0 800 400', preserveAspectRatio: 'xMidYMid meet' });
+      var glow = document.createElement('div');
+      glow.className = 'vfx-orbit-circle__glow';
+      wrapper.appendChild(glow);
 
-      /* Define node positions */
-      var nodes = [
-        /* Layer 1 (left) */
-        { x: 80, y: 80 }, { x: 80, y: 200 }, { x: 80, y: 320 },
-        /* Layer 2 */
-        { x: 240, y: 60 }, { x: 240, y: 160 }, { x: 240, y: 260 }, { x: 240, y: 360 },
-        /* Layer 3 */
-        { x: 420, y: 100 }, { x: 420, y: 200 }, { x: 420, y: 300 },
-        /* Layer 4 */
-        { x: 580, y: 80 }, { x: 580, y: 200 }, { x: 580, y: 320 },
-        /* Layer 5 (right) */
-        { x: 720, y: 140 }, { x: 720, y: 260 }
-      ];
-
-      /* Define connections (index pairs) */
-      var connections = [
-        [0,3],[0,4],[1,3],[1,4],[1,5],[2,4],[2,5],[2,6],
-        [3,7],[3,8],[4,7],[4,8],[4,9],[5,8],[5,9],[6,9],
-        [7,10],[7,11],[8,10],[8,11],[8,12],[9,11],[9,12],
-        [10,13],[10,14],[11,13],[11,14],[12,13],[12,14]
-      ];
-
-      /* Draw lines */
-      connections.forEach(function (c) {
-        var n1 = nodes[c[0]];
-        var n2 = nodes[c[1]];
-        var dx = n2.x - n1.x;
-        var dy = n2.y - n1.y;
-        var len = Math.sqrt(dx * dx + dy * dy);
-        var line = svgEl('line', {
-          x1: n1.x, y1: n1.y,
-          x2: n2.x, y2: n2.y
-        });
-        line.style.setProperty('--vfx-dash', String(Math.round(len)));
-        /* Stagger the drawing animation */
-        line.style.transitionDelay = (c[0] * 0.08) + 's';
-        svg.appendChild(line);
-      });
-
-      /* Draw nodes */
-      nodes.forEach(function (n, idx) {
-        var circle = svgEl('circle', {
-          cx: n.x, cy: n.y, r: 3
-        });
-        circle.style.setProperty('--vfx-node-delay', (1.5 + idx * 0.1) + 's');
-        svg.appendChild(circle);
-      });
-
+      var svg = svgEl('svg', { viewBox: '0 0 200 200' });
+      var base = svgEl('circle', { cx: 100, cy: 100, r: 90, class: 'vfx-ring-base' });
+      var ring = svgEl('circle', { cx: 100, cy: 100, r: 90, class: 'vfx-ring-glow' });
+      svg.appendChild(base);
+      svg.appendChild(ring);
       wrapper.appendChild(svg);
+
       slide.insertBefore(wrapper, slide.firstChild);
     })();
 
 
-    /* ==== 2. SLIDE 5 — Rotating Incomplete Circle (REMOVED) ==== */
-
-
-    /* ==== 3. SLIDES 8 & 9 — Floating Logo Cluster ==== */
-    /* Primarily on slide 9 (logo cloud) for maximum visual impact,
-       lighter version on slide 8 (ansiedade text) as backdrop. */
+    /* ==== 3. SLIDES 6 & 7 — Floating Logo Cluster ==== */
     (function () {
       var tools = [
         { name: 'ChatGPT', layer: 'front', top: 5, left: 3 },
@@ -816,19 +771,14 @@
         slide.insertBefore(wrapper, slide.firstChild);
       }
 
-      /* Slide 10 — primary, stronger presence */
-      createCluster(10, 'vfx-logo-cluster--primary');
-      /* Slide 9 — lighter backdrop */
-      createCluster(9, 'vfx-logo-cluster--subtle');
+      createCluster(7, 'vfx-logo-cluster--primary');
+      createCluster(6, 'vfx-logo-cluster--subtle');
     })();
 
 
-    /* ==== 4. MICRO-ILLUSTRATIONS (REMOVED) ==== */
-
-
-    /* ==== 5. SLIDE 19 — Connected Blocks ==== */
+    /* ==== 4. SLIDE 13 — Connected Blocks (Testes slide) ==== */
     (function () {
-      var slide = getSlide(19);
+      var slide = getSlide(13);
       if (!slide) return;
 
       var wrapper = document.createElement('div');
@@ -837,7 +787,6 @@
 
       var svg = svgEl('svg', { viewBox: '0 0 240 300', preserveAspectRatio: 'xMidYMid meet' });
 
-      /* Blocks */
       var blockData = [
         { x: 10, y: 10, w: 70, h: 40, glow: 'vfx-block-glow-1' },
         { x: 100, y: 30, w: 60, h: 35, glow: '' },
@@ -850,11 +799,9 @@
       blockData.forEach(function (b) {
         var attrs = { x: b.x, y: b.y, width: b.w, height: b.h };
         if (b.glow) attrs['class'] = b.glow;
-        var rect = svgEl('rect', attrs);
-        svg.appendChild(rect);
+        svg.appendChild(svgEl('rect', attrs));
       });
 
-      /* Connection lines between blocks */
       var lineData = [
         { x1: 45, y1: 50, x2: 130, y2: 30 },
         { x1: 80, y1: 50, x2: 62, y2: 90 },
@@ -864,13 +811,12 @@
         { x1: 165, y1: 140, x2: 172, y2: 190 }
       ];
 
-      lineData.forEach(function (l) {
-        var dx = l.x2 - l.x1;
-        var dy = l.y2 - l.y1;
+      lineData.forEach(function (l, i) {
+        var dx = l.x2 - l.x1, dy = l.y2 - l.y1;
         var len = Math.round(Math.sqrt(dx * dx + dy * dy));
         var line = svgEl('line', l);
         line.style.setProperty('--vfx-bl', String(len));
-        line.style.transitionDelay = (lineData.indexOf(l) * 0.3 + 0.5) + 's';
+        line.style.transitionDelay = (i * 0.3 + 0.5) + 's';
         svg.appendChild(line);
       });
 
@@ -879,9 +825,9 @@
     })();
 
 
-    /* ==== 6. SLIDE 21 — Growing Central Light ==== */
+    /* ==== 5. SLIDE 22 — Central Light ==== */
     (function () {
-      var slide = getSlide(21);
+      var slide = getSlide(22);
       if (!slide) return;
 
       var light = document.createElement('div');
@@ -891,8 +837,8 @@
     })();
 
 
-    /* ==== 7. SLIDES 22 & 23 — Diagonal Light Sweep ==== */
-    [22, 23].forEach(function (num) {
+    /* ==== 6. SLIDES 25 & 26 — Diagonal Light Sweep ==== */
+    [25, 26].forEach(function (num) {
       var slide = getSlide(num);
       if (!slide) return;
 
@@ -903,92 +849,4 @@
     });
   }
 
-
-  /* -------------------------------------------------------
-     INIT
-     ------------------------------------------------------- */
-  document.addEventListener('DOMContentLoaded', function () {
-    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    /* Cache DOM */
-    track = document.querySelector('.slides-track');
-    slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-    navItems = Array.prototype.slice.call(document.querySelectorAll('.side-nav__item'));
-    progressFill = document.querySelector('.progress__fill');
-    counterCurrent = document.querySelector('.slide-counter__current');
-    prevArrow = document.querySelector('.nav-arrow--prev');
-    nextArrow = document.querySelector('.nav-arrow--next');
-    keyHint = document.querySelector('.key-hint');
-    sideNav = document.querySelector('.side-nav');
-    slideCounter = document.querySelector('.slide-counter');
-    totalSlides = slides.length;
-
-    /* Update total counter */
-    var totalEl = document.querySelector('.slide-counter__total');
-    if (totalEl) {
-      totalEl.textContent = String(totalSlides).padStart(2, '0');
-    }
-
-    /* Init star field (even with reduced motion, skip canvas) */
-    if (!prefersReducedMotion) {
-      initStarCanvas();
-    }
-
-    if (prefersReducedMotion) {
-      /* Show everything immediately */
-      slides.forEach(function (slide) {
-        slide.querySelectorAll('[data-animate], [data-stagger], [data-stagger-scale]').forEach(function (el) {
-          el.classList.add('visible');
-          if (el.getAttribute('data-animate') === 'words') {
-            el.classList.add('split-visible');
-          }
-        });
-        slide.querySelectorAll('.orbit-tag').forEach(function (t) {
-          t.classList.add('orbit-tag--active');
-        });
-        slide.querySelectorAll('.diamond-path').forEach(function (p) {
-          p.style.strokeDashoffset = '0';
-        });
-      });
-      showUI();
-      updateArrows();
-      initKeyboardNav();
-      initSideNavClick();
-      initArrowNav();
-      initTouchNav();
-      initWheelNav();
-      initSideNavToggle();
-      return;
-    }
-
-    /* Normal init */
-    initSplitText();
-    initDiamondDraw();
-    initCardTilt();
-    initVisualLayers();
-
-    /* Show UI after brief delay */
-    setTimeout(function () {
-      showUI();
-      updateArrows();
-    }, 400);
-
-    /* Activate first slide animations */
-    setTimeout(function () {
-      activateSlideAnimations(0);
-    }, 250);
-
-    /* Update initial state */
-    updateProgress();
-    updateCounter();
-    updateNavActive();
-
-    /* Init interactions */
-    initKeyboardNav();
-    initSideNavClick();
-    initArrowNav();
-    initTouchNav();
-    initWheelNav();
-    initSideNavToggle();
-  });
 })();

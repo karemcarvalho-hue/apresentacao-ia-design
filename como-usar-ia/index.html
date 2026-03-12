@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Como Usar IA no Processo de Design — Na Prática</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <canvas class="stars-canvas" id="starsCanvas"></canvas>
+
+  <div class="atmosphere" aria-hidden="true">
+    <div class="atmosphere__orb atmosphere__orb--1"></div>
+    <div class="atmosphere__orb atmosphere__orb--2"></div>
+    <div class="atmosphere__orb atmosphere__orb--3"></div>
+  </div>
+
+  <div class="progress" aria-hidden="true">
+    <div class="progress__fill"></div>
+  </div>
+
+  <nav class="side-nav" aria-label="Seções">
+    <div class="side-nav__track">
+      <button class="side-nav__item side-nav__item--active" data-nav="abertura">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Abertura</span>
+      </button>
+      <button class="side-nav__item" data-nav="processo">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Processo</span>
+      </button>
+      <button class="side-nav__item" data-nav="ia-design">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">IA &amp; Design</span>
+      </button>
+      <button class="side-nav__item" data-nav="discovery">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Discovery</span>
+      </button>
+      <button class="side-nav__item" data-nav="testes">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Testes &amp; Iteração</span>
+      </button>
+      <button class="side-nav__item" data-nav="delivery">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Delivery</span>
+      </button>
+      <button class="side-nav__item" data-nav="core">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Core</span>
+      </button>
+      <button class="side-nav__item" data-nav="novo-papel">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Novo Papel</span>
+      </button>
+      <button class="side-nav__item" data-nav="fechamento">
+        <span class="side-nav__dot"></span>
+        <span class="side-nav__label">Fechamento</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="slide-counter" aria-hidden="true">
+    <span class="slide-counter__current">01</span>
+    <span class="slide-counter__sep"> / </span>
+    <span class="slide-counter__total">26</span>
+  </div>
+
+  <div class="key-hint" aria-hidden="true">
+    <span class="key-hint__key">&larr;</span>
+    <span class="key-hint__key">&rarr;</span>
+    <span>navegar</span>
+  </div>
+
+  <button class="nav-arrow nav-arrow--prev" aria-label="Slide anterior">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="nav-arrow nav-arrow--next" aria-label="Próximo slide">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+
+  <div class="slides-track">
+
+
+  <!-- ============================================================
+       ABERTURA — Narrativa original
+       ============================================================ -->
+
+  <!-- SLIDE 1 — Cover -->
+  <section class="slide" data-chapter="abertura" data-slide="1">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Na Prática
+      </span>
+      <h1 class="title" data-animate="words">
+        Como usar IA no<br /><span class="gradient">processo de Design</span>
+      </h1>
+      <p class="body-text" data-animate="blur-in">
+        Exemplos reais, ferramentas para usar no dia a dia<br />
+        e como IA se encaixa em cada etapa do processo.
+      </p>
+      <p class="footer-text" data-animate="fade-up" style="margin-top: 1rem;">
+        Karem Carvalho
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — Combinado -->
+  <section class="slide" data-chapter="abertura" data-slide="2">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words" style="margin-bottom: 0.5rem;">
+        Antes de começar,<br />um <span class="gradient">combinado.</span>
+      </p>
+      <p class="body-text" data-animate="blur-in" style="margin-bottom: 2.5rem;">
+        Vamos fazer pausas ao longo da apresentação para colocar a mão na massa.
+      </p>
+      <div class="combinado-cards" data-stagger>
+        <div class="combinado-card">
+          <div class="combinado-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 class="combinado-card__title">Pausa</h3>
+          <p class="combinado-card__desc">Vou pausar em pontos-chave para vocês praticarem.</p>
+        </div>
+        <div class="combinado-card">
+          <div class="combinado-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="combinado-card__title">Salas em grupo</h3>
+          <p class="combinado-card__desc">O time se divide em salas para compartilhar aprendizados entre si.</p>
+        </div>
+        <div class="combinado-card">
+          <div class="combinado-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3 class="combinado-card__title">Compartilhar</h3>
+          <p class="combinado-card__desc">Cada grupo traz pelo menos 1 exemplo para dividir com todos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PROCESSO
+       ============================================================ -->
+
+  <!-- SLIDE 3 — Design é Circular -->
+  <section class="slide" data-chapter="processo" data-slide="3">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Processo
+      </span>
+      <p class="subtitle" data-animate="words">
+        O design real nunca foi linear.<br />
+        <span class="gradient">Ele sempre foi circular.</span>
+      </p>
+      <div class="orbit-container" data-animate="scale-up">
+        <div class="orbit-ring">
+          <span class="orbit-tag" style="--angle: 0deg">Descobrir</span>
+          <span class="orbit-tag" style="--angle: 72deg">Testar</span>
+          <span class="orbit-tag" style="--angle: 144deg">Ajustar</span>
+          <span class="orbit-tag" style="--angle: 216deg">Aprender</span>
+          <span class="orbit-tag" style="--angle: 288deg">Refinar</span>
+        </div>
+        <div class="orbit-center">
+          <div class="orbit-center__ring"></div>
+          <div class="orbit-center__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — Energia -->
+  <section class="slide" data-chapter="processo" data-slide="4">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">
+        Se o design é circular,<br />ele precisa de <span class="gradient">energia constante.</span>
+      </p>
+      <p class="body-text" data-animate="blur-in">
+        O que sempre quebrou o ciclo<br />foram as tarefas operacionais.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- SLIDE 5 — Ponte: IA resolve o operacional -->
+  <section class="slide" data-chapter="processo" data-slide="5">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">
+        Então vem a IA e promete resolver<br /><span class="gradient">todo o operacional.</span>
+      </p>
+      <p class="body-text" data-animate="blur-in" style="margin-top: 1rem;">
+        Bora buscar as ferramentas!
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       IA & DESIGN
+       ============================================================ -->
+  <!-- SLIDE 6 — Ansiedade de Ferramenta -->
+  <section class="slide" data-chapter="ia-design" data-slide="6">
+    <div class="slide__glow slide__glow--bottom-left"></div>
+    <div class="slide__inner">
+      <h1 class="title" data-animate="words">
+        Estamos vivendo uma<br /><span class="gradient">ansiedade de ferramenta.</span>
+      </h1>
+      <p class="body-text" data-animate="blur-in" style="margin-top: 0.5rem;">
+        Toda semana nasce uma nova.<br />
+        Toda semana alguém posta <span class="accent">"essa vai substituir designers"</span>.
+      </p>
+      <div class="anxiety-sequence" data-stagger style="margin-top: 0.5rem;">
+        <p class="anxiety-step">E a gente testa.</p>
+        <p class="anxiety-step">E baixa.</p>
+        <p class="anxiety-step">E cria conta.</p>
+        <p class="anxiety-step anxiety-step--last">E abandona.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — Logo Cloud -->
+  <section class="slide" data-chapter="ia-design" data-slide="7">
+    <div class="slide__inner">
+      <div class="logo-cloud" data-stagger>
+        <span class="logo-pill logo-pill--lg"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64" alt="" />ChatGPT</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=suno.com&sz=64" alt="" />Suno</span>
+        <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=64" alt="" />Midjourney</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=gamma.app&sz=64" alt="" />Gamma</span>
+        <span class="logo-pill logo-pill--lg"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="" />Claude</span>
+        <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=runwayml.com&sz=64" alt="" />Runway</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=tome.app&sz=64" alt="" />Tome</span>
+        <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=figma.com&sz=64" alt="" />Figma AI</span>
+        <span class="logo-pill logo-pill--lg"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64" alt="" />Gemini</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=descript.com&sz=64" alt="" />Descript</span>
+        <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=64" alt="" />Perplexity</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=granola.ai&sz=64" alt="" />Granola</span>
+        <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=v0.dev&sz=64" alt="" />v0</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=64" alt="" />ElevenLabs</span>
+        <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=lovable.dev&sz=64" alt="" />Lovable</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=miro.com&sz=64" alt="" />Miro AI</span>
+        <span class="logo-pill logo-pill--lg"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=cursor.com&sz=64" alt="" />Cursor</span>
+        <span class="logo-pill logo-pill--sm"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=framer.com&sz=64" alt="" />Framer AI</span>
+        <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=notion.so&sz=64" alt="" />Notion AI</span>
+        <span class="logo-pill logo-pill--md"><img class="logo-pill__icon" src="https://www.google.com/s2/favicons?domain=firefly.adobe.com&sz=64" alt="" />Adobe Firefly</span>
+      </div>
+      <p class="subtitle" data-animate="blur-in" style="margin-top: 2rem;">
+        Mas é impossível <span class="gradient">usar tudo.</span>
+      </p>
+      <p class="body-text" data-animate="blur-in">
+        Temos que entender o que faz sentido<br />
+        <span class="accent">em cada processo.</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       TRANSIÇÃO — Mapa prático
+       ============================================================ -->
+
+  <!-- SLIDE 8 — Transição: Onde a IA vira o jogo -->
+  <section class="slide" data-chapter="ia-design" data-slide="8">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">
+        Precisamos entender quais ferramentas de IA<br /><span class="gradient">fazem sentido no nosso processo.</span>
+      </p>
+      <p class="body-text" data-animate="blur-in" style="margin-top: 1rem;">
+        São muitas. Testar, escolher, experimentar.<br />
+        E é aqui que a <span class="accent">IA vira o jogo.</span>
+      </p>
+      <div class="cycle-steps" data-stagger style="margin-top: 2rem;">
+        <span class="cycle-step">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Discovery
+        </span>
+        <span class="cycle-step__arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+        <span class="cycle-step">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Testes &amp; Iteração
+        </span>
+        <span class="cycle-step__arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+        <span class="cycle-step">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Delivery
+        </span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       DISCOVERY
+       ============================================================ -->
+
+  <!-- SLIDE 9 — Discovery: Onde a IA muda o jogo -->
+  <section class="slide" data-chapter="discovery" data-slide="9">
+    <div class="slide__glow slide__glow--top-right"></div>
+    <div class="slide__inner slide__inner--wide">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Discovery
+      </span>
+      <p class="subtitle" data-animate="words">Onde a IA <span class="gradient">muda o jogo</span></p>
+      <div class="compare-grid" data-animate="scale-up">
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label">Antes</span>
+          <div class="pain-list" data-stagger>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Entrevistas longas</span></div>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Transcrição manual</span></div>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Miro infinito</span></div>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Síntese demorada</span></div>
+          </div>
+        </div>
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label compare-label--accent">Agora com IA</span>
+          <div class="tool-list" data-stagger-scale>
+            <div class="tool-card"><div class="tool-card__circle"><img class="tool-card__logo" src="https://www.google.com/s2/favicons?domain=granola.ai&sz=64" alt="Granola" /></div><p class="tool-card__name">Granola</p><p class="tool-card__desc">Transcrição inteligente de entrevistas</p><span class="tool-card__badge">Discovery</span></div>
+            <div class="tool-card"><div class="tool-card__circle"><img class="tool-card__logo" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64" alt="ChatGPT" /></div><p class="tool-card__name">ChatGPT</p><p class="tool-card__desc">Síntese e hipóteses de pesquisa</p><span class="tool-card__badge">Ideação</span></div>
+            <div class="tool-card"><div class="tool-card__circle"><img class="tool-card__logo" src="https://www.google.com/s2/favicons?domain=notebooklm.google.com&sz=64" alt="NotebookLM" /></div><p class="tool-card__name">NotebookLM</p><p class="tool-card__desc">Organização automática de insights</p><span class="tool-card__badge">Estruturação</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 — Exemplo Prático Discovery -->
+  <section class="slide" data-chapter="discovery" data-slide="10">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-scale">Discovery</span>
+      <h2 class="title title--sm" data-animate="words">Exemplo <span class="gradient">Prático</span></h2>
+      <p class="body-text" data-animate="blur-in" style="opacity:0.5; margin-bottom:2rem;">Como apliquei IA nesse cenário — conteúdo ao vivo</p>
+
+      <div class="demo-cards" data-stagger>
+        <a href="https://karemcarvalho-hue.github.io/lumi-slides/?presentation=discovery-chat-panel" target="_blank" rel="noopener noreferrer" class="demo-card">
+          <div class="demo-card__icon demo-card__icon--chat">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="demo-card__content">
+            <h4 class="demo-card__title">Painel de Chat</h4>
+            <p class="demo-card__desc">Entrevistas com lojistas e insights de pesquisa</p>
+          </div>
+          <div class="demo-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        </a>
+        <a href="https://karemcarvalho-hue.github.io/lumi-slides/lumi-qualitative-presentation.html" target="_blank" rel="noopener noreferrer" class="demo-card">
+          <div class="demo-card__icon demo-card__icon--data">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <div class="demo-card__content">
+            <h4 class="demo-card__title">Análise Qualitativa</h4>
+            <p class="demo-card__desc">3.902 conversas reais analisadas com IA</p>
+          </div>
+          <div class="demo-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        </a>
+        <a href="https://karemcarvalho-hue.github.io/lumi-slides/lumi-design-roadmap.html" target="_blank" rel="noopener noreferrer" class="demo-card">
+          <div class="demo-card__icon demo-card__icon--roadmap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="demo-card__content">
+            <h4 class="demo-card__title">Design Roadmap</h4>
+            <p class="demo-card__desc">Roadmap visual Q1–Q2 2026 baseado em dados</p>
+          </div>
+          <div class="demo-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        </a>
+      </div>
+
+      <a href="https://karemcarvalho-hue.github.io/lumi-slides/index-urls.html" target="_blank" rel="noopener noreferrer" class="central-url-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Central de URLs
+      </a>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 — TRIGGER Discovery -->
+  <section class="slide" data-chapter="discovery" data-slide="11">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <div class="trigger-card" data-animate="scale-up">
+        <div class="trigger-card__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <span class="trigger-card__pause">Pausa</span>
+        <h2 class="trigger-card__title" data-animate="words">E vocês?<br /><span class="gradient">Onde IA entra no discovery de vocês?</span></h2>
+        <p class="trigger-card__sub">Ferramentas, processos, experimentos… Compartilhem!</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       DISCOVERY — Frase + Pilar 1
+       ============================================================ -->
+
+  <!-- SLIDE 12 — Discovery Frase + Pilar 1 -->
+  <section class="slide" data-chapter="discovery" data-slide="12">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">O discovery deixa de ser um gargalo<br /><span class="gradient">e vira fluxo contínuo de aprendizado.</span></p>
+      <p class="body-text" data-animate="blur-in" style="margin-top: 1.5rem; margin-bottom: 1rem;">E potencializa nosso pilar:</p>
+      <div class="pilar-card" data-animate="scale-up">
+        <div class="pilar-card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <span class="pilar-card__label">Pilar 1</span>
+        <h3 class="pilar-card__title"><span class="gradient">Entender problemas</span></h3>
+        <p class="pilar-card__desc">Sempre que decidimos atacar um problema, temos que entendê-lo perfeitamente. Nossa solução será tão boa quanto o entendimento que temos do problema.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       TESTES & ITERAÇÃO
+       ============================================================ -->
+
+  <!-- SLIDE 13 — Testes & Iteração: compare grid -->
+  <section class="slide" data-chapter="testes" data-slide="13">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner slide__inner--wide">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Testes &amp; Iteração
+      </span>
+      <p class="subtitle" data-animate="words">Testar deixa de ser um evento.<br /><span class="gradient">E vira um hábito.</span></p>
+      <div class="compare-grid" data-animate="scale-up">
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label">Antes</span>
+          <div class="pain-list" data-stagger>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Testes raros</span></div>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Simulações limitadas</span></div>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Iterações lentas</span></div>
+          </div>
+        </div>
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label compare-label--accent">Agora</span>
+          <div class="feature-list" data-stagger>
+            <div class="feature-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Criação rápida de cenários</span></div>
+            <div class="feature-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Ajustes frequentes</span></div>
+            <div class="feature-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Exploração de alternativas</span></div>
+            <div class="feature-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Testes conceituais antes do dev pesado</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 14 — Exemplo Prático Testes -->
+  <section class="slide" data-chapter="testes" data-slide="14">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-scale">Testes &amp; Iteração</span>
+      <h2 class="title title--sm" data-animate="words">Exemplo <span class="gradient">Prático</span></h2>
+      <p class="body-text" data-animate="blur-in" style="opacity:0.5; margin-bottom:2rem;">Como apliquei IA nesse cenário — conteúdo ao vivo</p>
+
+      <div class="demo-cards demo-cards--2col" data-stagger>
+        <a href="https://ai-poc-statistics-v2.vercel.app/admin/chat#/conversations" target="_blank" rel="noopener noreferrer" class="demo-card">
+          <div class="demo-card__icon demo-card__icon--chat">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="demo-card__content">
+            <h4 class="demo-card__title">Nuvem Chat</h4>
+            <p class="demo-card__desc">POC Statistics — conversas reais com lojistas</p>
+          </div>
+          <div class="demo-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        </a>
+        <a href="https://karemcarvalho-hue.github.io/lumi-dashboard/" target="_blank" rel="noopener noreferrer" class="demo-card">
+          <div class="demo-card__icon demo-card__icon--data">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <div class="demo-card__content">
+            <h4 class="demo-card__title">Lumi Dashboard</h4>
+            <p class="demo-card__desc">Métricas e dados visuais do Lumi</p>
+          </div>
+          <div class="demo-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        </a>
+      </div>
+
+      <a href="https://karemcarvalho-hue.github.io/lumi-slides/index-urls.html" target="_blank" rel="noopener noreferrer" class="central-url-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Central de URLs
+      </a>
+    </div>
+  </section>
+
+  <!-- SLIDE 15 — Pausa Testes -->
+  <section class="slide" data-chapter="testes" data-slide="15">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <div class="trigger-card" data-animate="scale-up">
+        <div class="trigger-card__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <span class="trigger-card__pause">Pausa</span>
+        <h2 class="trigger-card__title" data-animate="words">E vocês?<br /><span class="gradient">Como testam e iteram com IA?</span></h2>
+        <p class="trigger-card__sub">Protótipos, validações, experimentos… Compartilhem!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 16 — Frase + Pilar 2 -->
+  <section class="slide" data-chapter="testes" data-slide="16">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">A IA ajuda a sair do abstrato<br /><span class="gradient">mais cedo.</span></p>
+      <p class="body-text" data-animate="blur-in" style="margin-top: 1.5rem; margin-bottom: 1rem;">E potencializa nosso pilar:</p>
+      <div class="pilar-card" data-animate="scale-up">
+        <div class="pilar-card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <span class="pilar-card__label">Pilar 2</span>
+        <h3 class="pilar-card__title"><span class="gradient">Encantar com soluções</span></h3>
+        <p class="pilar-card__desc">Uma vez que temos o problema muito claro, temos que entender e testar todas as possíveis soluções para o mesmo problema e aprofundar em uma que encante as pessoas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 17 — Handoff & QA -->
+  <section class="slide" data-chapter="delivery" data-slide="17">
+    <div class="slide__inner slide__inner--wide">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Delivery
+      </span>
+      <p class="subtitle" data-animate="words">O delivery não encerra o design.<br /><span class="gradient">Ele alimenta o próximo ciclo.</span></p>
+      <div class="compare-grid" data-animate="scale-up">
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label">Antes</span>
+          <div class="pain-list" data-stagger>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Handoff como fim do processo</span></div>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Retrabalho</span></div>
+            <div class="pain-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Ajustes tardios</span></div>
+          </div>
+        </div>
+        <div class="glass glass--wide compare-col">
+          <span class="compare-label compare-label--accent">Agora com IA</span>
+          <div class="feature-list" data-stagger>
+            <div class="feature-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Explorar interações antes da entrega</span></div>
+            <div class="feature-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Refinar microinterações</span></div>
+            <div class="feature-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>QA visual mais inteligente</span></div>
+            <div class="feature-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Ajustes rápidos antes de produção</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 18 — Handoff cards -->
+  <section class="slide" data-chapter="delivery" data-slide="18">
+    <div class="slide__glow slide__glow--bottom-left"></div>
+    <div class="slide__inner slide__inner--wide">
+      <p class="subtitle" data-animate="words">Documento de <span class="gradient">handoff</span></p>
+      <div class="handoff-cards" data-stagger>
+        <div class="glass handoff-card"><div class="handoff-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><h3>Specs detalhadas</h3><p>IA gera specs de componentes, estados, edge cases</p></div>
+        <div class="glass handoff-card"><div class="handoff-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div><h3>Protótipo navegável</h3><p>Deploy real para o time sentir o produto antes do dev</p></div>
+        <div class="glass handoff-card"><div class="handoff-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><h3>Contexto de decisão</h3><p>Documenta os porquês, não só os quês</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 19 — Exemplo Prático Delivery -->
+  <section class="slide" data-chapter="delivery" data-slide="19">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-scale">Delivery</span>
+      <h2 class="title title--sm" data-animate="words">Exemplo <span class="gradient">Prático</span></h2>
+      <p class="body-text" data-animate="blur-in" style="opacity:0.5; margin-bottom:2rem;">Como apliquei IA nesse cenário — conteúdo ao vivo</p>
+
+      <div class="demo-cards" data-stagger>
+        <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/karemcarvalho-hue/aab21fbfe3d34facb9956c9e78319e82/raw/spec-card-orders-lumi.html" target="_blank" rel="noopener noreferrer" class="demo-card">
+          <div class="demo-card__icon demo-card__icon--spec">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="demo-card__content">
+            <h4 class="demo-card__title">Spec Card Orders</h4>
+            <p class="demo-card__desc">Especificação visual do card de pedidos</p>
+          </div>
+          <div class="demo-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        </a>
+        <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/karemcarvalho-hue/644b975d10171991725242953ac93bb9/raw/" target="_blank" rel="noopener noreferrer" class="demo-card">
+          <div class="demo-card__icon demo-card__icon--component">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          </div>
+          <div class="demo-card__content">
+            <h4 class="demo-card__title">Nimbus — Button Compact</h4>
+            <p class="demo-card__desc">Artefato de decisão para o Design System</p>
+          </div>
+          <div class="demo-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        </a>
+        <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/karemcarvalho-hue/cc6981835b829e147749ffbd9897bca3/raw/" target="_blank" rel="noopener noreferrer" class="demo-card">
+          <div class="demo-card__icon demo-card__icon--bulk">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="demo-card__content">
+            <h4 class="demo-card__title">Nimbus — Bulk Actions</h4>
+            <p class="demo-card__desc">Padronização de ações em massa</p>
+          </div>
+          <div class="demo-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        </a>
+      </div>
+
+      <a href="https://karemcarvalho-hue.github.io/lumi-slides/index-urls.html" target="_blank" rel="noopener noreferrer" class="central-url-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Central de URLs
+      </a>
+    </div>
+  </section>
+
+  <!-- SLIDE 20 — TRIGGER Delivery -->
+  <section class="slide" data-chapter="delivery" data-slide="20">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <div class="trigger-card" data-animate="scale-up">
+        <div class="trigger-card__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <span class="trigger-card__pause">Pausa</span>
+        <h2 class="trigger-card__title" data-animate="words">Como é o <span class="gradient">delivery no time de vocês?</span></h2>
+        <p class="trigger-card__sub">O que funciona? O que gera retrabalho? Vamos trocar.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SLIDE 21 — Pilar 3: Adicionar valor rapidamente -->
+  <section class="slide" data-chapter="delivery" data-slide="21">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">O delivery não encerra o design.<br /><span class="gradient">Ele alimenta o próximo ciclo.</span></p>
+      <p class="body-text" data-animate="blur-in" style="margin-top: 1.5rem; margin-bottom: 1rem;">E potencializa nosso pilar:</p>
+      <div class="pilar-card" data-animate="scale-up">
+        <div class="pilar-card__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <span class="pilar-card__label">Pilar 3</span>
+        <h3 class="pilar-card__title"><span class="gradient">Adicionar valor rapidamente</span></h3>
+        <p class="pilar-card__desc">Uma vez que projetamos uma solução que encanta, temos que lançar essa solução o mais rápido possível.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CORE
+       ============================================================ -->
+
+  <!-- SLIDE 22 — Não é sobre ferramentas -->
+  <section class="slide" data-chapter="core" data-slide="22">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        O Core
+      </span>
+      <p class="subtitle" data-animate="words">Mas não é sobre<br /><span class="gradient">as ferramentas.</span></p>
+      <div class="core-denial-row" data-stagger>
+        <div class="core-denial-card"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>O prompt perfeito</span></div>
+        <div class="core-denial-card"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>A ferramenta da moda</span></div>
+        <div class="core-denial-card"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Automatizar tudo</span></div>
+      </div>
+      <p class="body-text" data-animate="blur-in">Se fosse, <span class="accent">bastava copiar e colar.</span></p>
+    </div>
+  </section>
+
+  <!-- SLIDE 23 — O que importa: 3 Pilares -->
+  <section class="slide" data-chapter="core" data-slide="23">
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">O que realmente<br /><span class="gradient">importa.</span></p>
+      <div class="core-action-row" data-stagger>
+        <div class="core-action-card"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Entender problemas</span></div>
+        <div class="core-action-card"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Encantar com soluções</span></div>
+        <div class="core-action-card"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span>Adicionar valor rapidamente</span></div>
+      </div>
+      <div class="glass glass--narrow" data-animate="blur-in" style="text-align: center;">
+        <p class="body-text" style="max-width: none;">IA não cria método.<br /><span class="accent" style="font-weight: 600;">Ela amplifica método.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 24 — Cada designer constrói o seu -->
+  <section class="slide" data-chapter="core" data-slide="24">
+    <div class="slide__glow slide__glow--bottom-left"></div>
+    <div class="slide__inner">
+      <p class="subtitle" data-animate="words">Cada designer<br /><span class="gradient">constrói o seu.</span></p>
+      <div class="duality-grid" data-animate="scale-up">
+        <div class="duality-card duality-card--deny">
+          <div class="duality-card__header">
+            <div class="duality-card__icon duality-card__icon--deny"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+            <span class="duality-card__label">Não existe</span>
+          </div>
+          <div class="duality-card__items" data-stagger>
+            <p class="duality-card__item">Fluxo universal</p>
+            <p class="duality-card__item">Stack perfeita</p>
+            <p class="duality-card__item">Prompt ideal</p>
+          </div>
+        </div>
+        <div class="duality-card duality-card--affirm">
+          <div class="duality-card__header">
+            <div class="duality-card__icon duality-card__icon--affirm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="duality-card__label">Existe</span>
+          </div>
+          <div class="duality-card__items" data-stagger>
+            <p class="duality-card__item">Contexto</p>
+            <p class="duality-card__item">Repertório</p>
+            <p class="duality-card__item">Maturidade</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 25 — Menos executor. Mais estrategista. -->
+  <section class="slide" data-chapter="novo-papel" data-slide="25">
+    <div class="slide__glow slide__glow--top-right"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Novo Papel
+      </span>
+      <p class="subtitle" data-animate="words">Menos executor.<br /><span class="gradient">Mais estrategista.</span></p>
+      <div class="role-cards" data-stagger>
+        <div class="role-card">
+          <div class="role-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <h3 class="role-card__title">Leitura de contexto</h3>
+          <p class="role-card__desc">Enxergar além do briefing</p>
+        </div>
+        <div class="role-card">
+          <div class="role-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg></div>
+          <h3 class="role-card__title">Decisão consciente</h3>
+          <p class="role-card__desc">Escolher com critério, não com pressa</p>
+        </div>
+        <div class="role-card role-card--accent">
+          <div class="role-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <h3 class="role-card__title"><span class="gradient">Impacto real</span></h3>
+          <p class="role-card__desc">Design que muda resultado</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FECHAMENTO
+       ============================================================ -->
+
+  <!-- SLIDE 26 — Impacto -->
+  <section class="slide" data-chapter="fechamento" data-slide="26">
+    <div class="slide__glow slide__glow--center"></div>
+    <div class="slide__inner">
+      <span class="badge" data-animate="fade-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Fechamento
+      </span>
+      <h1 class="title" data-animate="words">
+        IA cuida do operacional.<br />
+        <span class="gradient">Designer cuida do impacto.</span>
+      </h1>
+      <p class="body-text" data-animate="blur-in" style="margin-top: 1rem;">
+        Quanto menos tempo executando tarefas repetitivas,<br />
+        mais espaço para fazer <span class="gradient">design de verdade.</span>
+      </p>
+      <p class="footer-text" data-animate="fade-up" style="margin-top: 2rem;">
+        Como Usar IA no Processo de Design — Karem Carvalho
+      </p>
+    </div>
+  </section>
+
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

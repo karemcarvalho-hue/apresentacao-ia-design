@@ -1460,7 +1460,71 @@ a { text-decoration: none; color: inherit; }
 
 
 /* ============================================================
-   ANXIETY SEQUENCE (slide 8 — rhythm list)
+   PILLAR CARDS (slide 7 — design team pillars)
+   ============================================================ */
+.pillar-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  max-width: 760px;
+  width: 100%;
+}
+
+.pillar-card {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-lg);
+  padding: 2rem 1.25rem 1.75rem;
+  text-align: center;
+  transition: all 0.4s var(--ease-out);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+}
+
+.pillar-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(120, 80, 255, 0.20);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22),
+              0 0 32px rgba(120, 80, 255, 0.06);
+}
+
+.pillar-card--accent {
+  border-color: rgba(120, 80, 255, 0.15);
+  background: rgba(120, 80, 255, 0.05);
+}
+
+.pillar-card--accent:hover {
+  border-color: rgba(120, 80, 255, 0.30);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22),
+              0 0 40px rgba(120, 80, 255, 0.12);
+}
+
+.pillar-card__emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  filter: saturate(0.85);
+}
+
+.pillar-card__title {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+
+.pillar-card__desc {
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--text-3);
+  line-height: 1.55;
+}
+
+
+/* ============================================================
+   ANXIETY SEQUENCE (slide 9 — rhythm list)
    ============================================================ */
 .anxiety-sequence {
   display: flex;
@@ -1745,6 +1809,10 @@ a { text-decoration: none; color: inherit; }
     gap: 1rem;
   }
 
+  .pillar-row {
+    gap: 1rem;
+  }
+
   .orbit-container {
     width: 360px;
     height: 360px;
@@ -1852,6 +1920,21 @@ a { text-decoration: none; color: inherit; }
 
   .duality-card {
     padding: 1.5rem 1.25rem;
+  }
+
+  .pillar-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    max-width: 320px;
+  }
+
+  .pillar-card {
+    padding: 1.5rem 1rem 1.25rem;
+  }
+
+  .pillar-card__emoji {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
   }
 
   .role-cards {
